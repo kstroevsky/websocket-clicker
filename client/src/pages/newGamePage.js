@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { v4 as uuid } from "uuid";
-import { useNavigate } from "react-router-dom";
+import {useState} from "react";
+import {v4 as uuid} from "uuid";
+import {useNavigate} from "react-router-dom";
 import styles from "./styles.module.scss";
+import CountOfRoom from "./countOfRoom";
 
 function NewGamePage() {
   const roomId = uuid();
@@ -23,7 +24,6 @@ function NewGamePage() {
     setUser("");
   };
 
-  console.log(user);
 
   return (
     <div className={styles.newGamePageWrapper}>
@@ -54,38 +54,39 @@ function NewGamePage() {
 
             <div className={styles.nameInput}>
               <input
-                onChange={(e) => {
-                  if (e.target.value < 2) {
-                    setRoomLimit(2);
-                  } else if (e.target.value > 5) {
-                    setRoomLimit(5);
-                  } else {
-                    setRoomLimit(e.target.value);
-                  }
-                }}
-                placeholder="Enter The Max players"
-                value={roomLimit}
-                type="number"
-                min={2}
-                max={5}
+                  onChange={(e) => {
+                    if (e.currentTarget.value < 2) {
+                      setRoomLimit(2);
+                    } else if (e.currentTarget.value > 5) {
+                      setRoomLimit(5);
+                    } else {
+                      setRoomLimit(e.currentTarget.value);
+                    }
+                  }}
+                  placeholder="Enter The Max players"
+                  value={roomLimit}
+                  type="number"
+                  min={2}
+                  max={5}
               />
               <button
-                className={styles.buttonEnterName}
-                disabled={user === ""}
-                onClick={createGame}
+                  className={styles.buttonEnterName}
+                  disabled={user === ""}
+                  onClick={createGame}
               >
                 &#9876;
               </button>
             </div>
           </div>
+          <CountOfRoom/>
           <div className={styles.inputs}>
             <h3 className={styles.titleForInput}>JOIN THE GAME</h3>
             <div className={styles.nameInput}>
               <input
-                onChange={(e) => setJoinUrl(e.target.value)}
-                placeholder="ADD HTTP"
-                value={joinUrl}
-                type="text"
+                  onChange={(e) => setJoinUrl(e.target.value)}
+                  placeholder="ADD HTTP"
+                  value={joinUrl}
+                  type="text"
               />
               <button
                 className={styles.buttonEnterName}

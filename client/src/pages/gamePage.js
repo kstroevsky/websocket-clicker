@@ -47,7 +47,7 @@ function GamePage() {
 
       return () => clearInterval(intervalId);
     }
-  }, [roomUsers, timeLeft]);
+  }, [gameStarted, roomLimit, roomUsers, timeLeft]);
 
   useEffect(() => {
     socket = io("http://localhost:4000", { transports: ["websocket"] });
@@ -58,13 +58,13 @@ function GamePage() {
 
     socket.on("roomUsers", ({ room, users }) => {
       setRoomUsers(users);
-      console.log(users, room);
+      console.log(users, room );
     });
 
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [roomId, roomLimit, userName]);
 
   const countHandler = () => {
     socket.emit("userMsg", count);

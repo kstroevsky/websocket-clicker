@@ -69,11 +69,11 @@ p{
      
 }
 
+
 .nameInput{
     display: flex;
     padding: 20px;
     justify-content: center;
-    margin: 10px;
 }
 .nameInput input {
     padding: 20px;
@@ -194,11 +194,12 @@ h1 {
 
   }
 
-  .inputs{
+  .inputs {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-width: 400px;
   }
   .titleForInput{
     text-align: center;
