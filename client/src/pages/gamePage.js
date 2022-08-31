@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
-import OpponentCounter from '../oponentCounter/index';
+import OpponentCounter from '../components/oponentCounter/index';
 
 let socket;
 

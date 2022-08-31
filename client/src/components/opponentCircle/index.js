@@ -11,16 +11,18 @@ export const OpponentCircle = ({ count, userName }) => {
     active && styles.active
   );
 
-  const addActiveClass = () => {
+
+
+  const addActiveClass =()=> {
     setActive(true);
     console.log("hello", count, active);
     setTimeout(() => setActive(false), 50);
     console.log("hello", count, active);
-  };
+  }
 
   useEffect(() => {
     addActiveClass();
-  }, [count]);
+  }, [ count]);
 
   return (
     <div className={OpponentCircleClasses}>

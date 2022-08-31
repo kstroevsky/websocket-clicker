@@ -1,4 +1,4 @@
-import { OpponentCircle } from "./../opponentCircle/index";
+import { OpponentCircle } from "../opponentCircle";
 
 const OpponentCounter = ({ i, data }) => (
   <OpponentCircle

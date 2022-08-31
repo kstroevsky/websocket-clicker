@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
-import ListOfUsers from './listOfUsers';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {io} from 'socket.io-client';
+import ListOfUsers from '../components/listOfUsers';
+import {useLocation, useNavigate} from 'react-router-dom';
 import styles from './styles.module.scss';
 
 let socket;
@@ -31,9 +31,9 @@ function Rooms() {
 	return (
 		<div className={styles.newGamePageWrapper}>
 			<h3 className={styles.titleForInput}>
-				{location.state.name}, Chose a game or make a new game
+				{location.state.name}, Chose a game or press button to create new game
 			</h3>
-			<button onClick={() => navigate('/')}>New game</button>
+			<button className={styles.buttonEnterName} onClick={() => navigate('/')}>&#9876;</button>
 			{!!rooms &&
 				Object.keys(rooms).map((key, index) => {
 					const roomLimit = rooms[key][0].roomLimit;
