@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 import OpponentCounter from '../oponentCounter/index';
 
-
 let socket;
 
 function GamePage() {
@@ -29,11 +28,8 @@ function GamePage() {
 	useEffect(() => {
 		if (timeLeft === 0 && gameStarted === true) {
 			setGameStarted(false);
-
 			return;
 		}
-
-		console.log(roomLimit, roomUsers.length);
 
 		if (+roomLimit === roomUsers.length) {
 			const intervalId = setInterval(() => {
@@ -52,11 +48,10 @@ function GamePage() {
 	useEffect(() => {
 		socket = io('http://localhost:4000', { transports: ['websocket'] });
 		const handler = msg => setData(prev => [...prev, msg]);
-		socket.on('message', handler, );
+		socket.on('message', handler);
 		socket.emit('joinRoom', { roomId, userName, roomLimit });
 		socket.on('roomUsers', ({ room, users }) => {
 			setRoomUsers(users);
-			console.log(room, "room")
 		});
 		return () => {
 			socket.disconnect();
@@ -67,7 +62,7 @@ function GamePage() {
 		socket.emit('userMsg', count);
 		setCount(prev => prev + 1);
 	};
-	console.log(roomUsers, "pasha")
+
 	return (
 		<div className={styles.gameWrapper}>
 			<div style={{ dislplay: 'flex' }}>

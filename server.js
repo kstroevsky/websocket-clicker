@@ -4,7 +4,8 @@ const io = require('socket.io')(http);
 
 const formatMesage = (userName, text) => {
 	return {
-		userName, text,
+		userName,
+		text,
 	};
 };
 
@@ -12,9 +13,13 @@ const botName = 'Game Bot';
 
 const users = [];
 
-const userJoin = (id, userName, room) => {
+
+const userJoin = (id, userName, room, roomLimit) => {
 	const user = {
-		id, userName, room,
+		id,
+		userName,
+		room,
+		roomLimit,
 	};
 	users.push(user);
 	return user;
@@ -29,34 +34,53 @@ const userLeave = id => {
 };
 const getRoomUsers = room => users.filter(user => user.room === room);
 
+const addRooms = arr => {
+	return arr.reduce((acc, cur) => {
+		if (!acc[cur['room']]) {
+			return {
+				...acc,
+				[cur['room']]: [cur],
+			};
+		}
+		return {
+			...acc,
+			[cur['room']]: [...acc[cur['room']], cur],
+		};
+	}, {});
+};
+
 io.on('connection', socket => {
-	socket.on('joinRoom', ({roomId, userName, roomLimit}) => {
+	socket.on('joinRoom', ({ roomId, userName, roomLimit }) => {
+		console.log(getRoomUsers(roomId).length < roomLimit, 'test');
 		if (getRoomUsers(roomId).length < roomLimit) {
-			const user = userJoin(socket.id, userName, roomId);
+			const user = userJoin(socket.id, userName, roomId, roomLimit);
 			console.log(getRoomUsers(roomId).length, roomLimit, user.room);
 			socket.join(user.room);
 			io.to(user.room).emit('roomUsers', {
-				room: user.room, users: getRoomUsers(user.room),
+				room: user.room,
+				users: getRoomUsers(user.room),
 			});
 			socket.on('userMsg', msg => {
 				const user = getCurrentUser(socket.id);
 				io.to(user.room).emit('message', formatMesage(user.userName, msg));
 			});
-			console.log(users)
-
 		} else {
-			return users
+			return null;
 		}
 	});
+	socket.emit('allRooms', addRooms(users));
 
-	socket.emit("allRooms", users)
 	socket.on('disconnect', () => {
 		const user = userLeave(socket.id);
 		if (user) {
-			io.to(user.room).emit('message', formatMesage(botName, `${user.userName} has left the room`));
+			io.to(user.room).emit(
+				'message',
+				formatMesage(botName, `${user.userName} has left the room`)
+			);
 
 			io.to(user.room).emit('roomUsers', {
-				room: user.room, users: getRoomUsers(user.room),
+				room: user.room,
+				users: getRoomUsers(user.room),
 			});
 		}
 	});

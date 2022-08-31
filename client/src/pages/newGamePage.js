@@ -1,8 +1,7 @@
-import {useState} from 'react';
-import {v4 as uuid} from 'uuid';
-import {useNavigate} from 'react-router-dom';
+import { useState } from 'react';
+import { v4 as uuid } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
-
 
 function NewGamePage() {
 	const roomId = uuid();
@@ -11,11 +10,10 @@ function NewGamePage() {
 	const [roomLimit, setRoomLimit] = useState(2);
 	const [nameEntered, setNameEntered] = useState(false);
 
-	let navigate = useNavigate();
-
+	const navigate = useNavigate();
 	const createGame = () => {
-		setUser('');
 		navigate(`/game/${roomId}/${user}/${roomLimit}`);
+		setUser('');
 	};
 
 	const joinGame = () => {
@@ -24,8 +22,8 @@ function NewGamePage() {
 	};
 
 	const openList = () => {
-		navigate('/rooms', {state:{name:user}})
-	}
+		navigate('/rooms', { state: { name: user } });
+	};
 	return (
 		<div className={styles.newGamePageWrapper}>
 			<h1 className="font-effect-fire-animation">C L I C K E R</h1>
@@ -81,10 +79,7 @@ function NewGamePage() {
 					</div>
 					<div className={styles.inputs}>
 						<h3 className={styles.titleForInput}>List of active games</h3>
-						<button
-							onClick={openList}
-							className={styles.buttonEnterName}
-						>
+						<button onClick={openList} className={styles.buttonEnterName}>
 							{' '}
 							&#9876;
 						</button>
