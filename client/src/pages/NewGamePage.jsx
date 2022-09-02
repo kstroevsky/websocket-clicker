@@ -11,6 +11,21 @@ function NewGamePage() {
 	const [nameEntered, setNameEntered] = useState(false);
 
 	const navigate = useNavigate();
+	const onChangeHandler = e => {
+		const value = e.currentTarget.value;
+		switch (value) {
+			case value < 2: {
+				setRoomLimit(2);
+				break;
+			}
+			case value > 5:
+				setRoomLimit(5);
+				break;
+			default:
+				setRoomLimit(value);
+		}
+	};
+
 	const createGame = () => {
 		navigate(`/game/${roomId}/${user}/${roomLimit}`);
 		setUser('');
@@ -53,15 +68,7 @@ function NewGamePage() {
 
 						<div className={styles.nameInput}>
 							<input
-								onChange={e => {
-									if (e.currentTarget.value < 2) {
-										setRoomLimit(2);
-									} else if (e.currentTarget.value > 5) {
-										setRoomLimit(5);
-									} else {
-										setRoomLimit(e.currentTarget.value);
-									}
-								}}
+								onChange={onChangeHandler}
 								placeholder="Enter The Max players"
 								value={roomLimit}
 								type="number"

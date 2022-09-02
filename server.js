@@ -34,24 +34,10 @@ const userLeave = id => {
 };
 const getRoomUsers = room => users.filter(user => user.room === room);
 
-const addRooms = arr => {
-	return arr.reduce((acc, cur) => {
-		if (!acc[cur['room']]) {
-			return {
-				...acc,
-				[cur['room']]: [cur],
-			};
-		}
-		return {
-			...acc,
-			[cur['room']]: [...acc[cur['room']], cur],
-		};
-	}, {});
-};
+const addRooms = arr => arr.reduce((acc, cur) => ({ ...acc, [cur['room']]: acc[cur['room']] ? [...acc[cur['room']], cur] : [cur] }), {});
 
 io.on('connection', socket => {
 	socket.on('joinRoom', ({ roomId, userName, roomLimit }) => {
-		console.log(getRoomUsers(roomId).length < roomLimit, 'test');
 		if (getRoomUsers(roomId).length < roomLimit) {
 			const user = userJoin(socket.id, userName, roomId, roomLimit);
 			console.log(getRoomUsers(roomId).length, roomLimit, user.room);
@@ -64,8 +50,6 @@ io.on('connection', socket => {
 				const user = getCurrentUser(socket.id);
 				io.to(user.room).emit('message', formatMesage(user.userName, msg));
 			});
-		} else {
-			return null;
 		}
 	});
 	socket.emit('allRooms', addRooms(users));

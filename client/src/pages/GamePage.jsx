@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
-import OpponentCounter from '../components/oponentCounter/index';
+import OpponentCounter from '../components/OponentCounter';
+import { io } from 'socket.io-client';
 
 let socket;
-
 function GamePage() {
 	const navigate = useNavigate();
 	const { roomId, userName, roomLimit } = useParams();
@@ -53,6 +52,7 @@ function GamePage() {
 		socket.on('roomUsers', ({ room, users }) => {
 			setRoomUsers(users);
 		});
+		console.log('useEffect', socket);
 		return () => {
 			socket.disconnect();
 		};
@@ -62,7 +62,7 @@ function GamePage() {
 		socket.emit('userMsg', count);
 		setCount(prev => prev + 1);
 	};
-
+	console.log('socket', socket);
 	return (
 		<div className={styles.gameWrapper}>
 			<div style={{ dislplay: 'flex' }}>
