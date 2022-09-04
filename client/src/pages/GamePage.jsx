@@ -3,9 +3,12 @@ import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 import OpponentCounter from '../components/OponentCounter';
+import { COPY_LABEL, GO_HOME_LABEL } from '../utils/variables';
+import { copy } from '../utils/utils';
 import { io } from 'socket.io-client';
 
 let socket;
+
 function GamePage() {
 	const navigate = useNavigate();
 	const { roomId, userName, roomLimit } = useParams();
@@ -15,32 +18,23 @@ function GamePage() {
 	const [gameStarted, setGameStarted] = useState(false);
 	const [timeLeft, setTimeLeft] = useState(5);
 
-	function copy() {
-		const el = document.createElement('input');
-		el.value = window.location.href;
-		document.body.appendChild(el);
-		el.select();
-		document.execCommand('copy');
-		document.body.removeChild(el);
-	}
-
 	useEffect(() => {
-		if (timeLeft === 0 && gameStarted === true) {
-			setGameStarted(false);
-			return;
-		}
-
-		if (+roomLimit === roomUsers.length) {
-			const intervalId = setInterval(() => {
-				setTimeLeft(prev => prev - 1);
-			}, 1000);
-
-			if (gameStarted === false && timeLeft === 0) {
-				setGameStarted(true);
-				setTimeLeft(10);
-			}
-
-			return () => clearInterval(intervalId);
+		const isTimeUp = timeLeft === 0;
+		switch (true) {
+			case gameStarted && isTimeUp:
+				setGameStarted(false);
+				break;
+			case +roomLimit === roomUsers.length:
+				const intervalId = setInterval(() => {
+					setTimeLeft(prev => prev - 1);
+				}, 1000);
+				if (!gameStarted && isTimeUp) {
+					setGameStarted(true);
+					setTimeLeft(10);
+				}
+				return () => clearInterval(intervalId);
+			default:
+				setGameStarted(false);
 		}
 	}, [gameStarted, roomLimit, roomUsers, timeLeft]);
 
@@ -52,7 +46,6 @@ function GamePage() {
 		socket.on('roomUsers', ({ room, users }) => {
 			setRoomUsers(users);
 		});
-		console.log('useEffect', socket);
 		return () => {
 			socket.disconnect();
 		};
@@ -62,19 +55,24 @@ function GamePage() {
 		socket.emit('userMsg', count);
 		setCount(prev => prev + 1);
 	};
-	console.log('socket', socket);
+	const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
+
 	return (
 		<div className={styles.gameWrapper}>
 			<div style={{ dislplay: 'flex' }}>
-				<button title="COPY" className={styles.buttonEnterName} onClick={copy}>
-					&#128464;
+				<button
+					title="COPY"
+					className={styles.buttonEnterName}
+					onClick={() => copy()}
+				>
+					{COPY_LABEL}
 				</button>
 				<button
 					title="GO HOME"
 					className={styles.buttonEnterName}
 					onClick={() => navigate('/')}
 				>
-					&#8962;
+					{GO_HOME_LABEL}
 				</button>
 			</div>
 			<div className={gameStarted ? styles.startGame : styles.startGameHidden}>
@@ -104,26 +102,10 @@ function GamePage() {
 					{timeLeft > 0 ? timeLeft : 'Game Over'}
 				</div>
 				{gameStarted ? (
-					<div>
-						Current Leader{' '}
-						{
-							data.reduce(
-								(prev, current) => (prev.text > current.text ? prev : current),
-								{}
-							)?.userName
-						}
-					</div>
+					<div>Current Leader {winner}</div>
 				) : (
 					<div className={styles.winnerTitle}>
-						{timeLeft === 0 &&
-							!gameStarted &&
-							`Player ${
-								data.reduce(
-									(prev, current) =>
-										prev.text > current.text ? prev : current,
-									{}
-								)?.userName
-							} WIN`}
+						{timeLeft === 0 && !gameStarted && `Player ${winner} WIN`}
 					</div>
 				)}
 			</div>

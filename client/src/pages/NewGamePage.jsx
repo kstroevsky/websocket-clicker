@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
+import { START_GAME_LABEL } from '../utils/variables';
+import { useGameDetails } from '../hooks/useGameDetails';
 
 function NewGamePage() {
 	const roomId = uuid();
@@ -10,30 +12,21 @@ function NewGamePage() {
 	const [roomLimit, setRoomLimit] = useState(2);
 	const [nameEntered, setNameEntered] = useState(false);
 
+	const { createGame, joinGame } = useGameDetails();
+
 	const navigate = useNavigate();
 	const onChangeHandler = e => {
-		const value = e.currentTarget.value;
-		switch (value) {
-			case value < 2: {
+		switch (e.currentTarget.value) {
+			case e.currentTarget.value < 2: {
 				setRoomLimit(2);
 				break;
 			}
-			case value > 5:
+			case e.currentTarget.value > 5:
 				setRoomLimit(5);
 				break;
 			default:
-				setRoomLimit(value);
+				setRoomLimit(e.currentTarget.value);
 		}
-	};
-
-	const createGame = () => {
-		navigate(`/game/${roomId}/${user}/${roomLimit}`);
-		setUser('');
-	};
-
-	const joinGame = () => {
-		navigate(`/game/${joinUrl.split('/')[4]}/${user}/${joinUrl.split('/')[6]}`);
-		setUser('');
 	};
 
 	const openList = () => {
@@ -58,7 +51,7 @@ function NewGamePage() {
 						disabled={user === ''}
 						className={styles.buttonEnterName}
 					>
-						&#9876;
+						{START_GAME_LABEL}
 					</button>
 				</>
 			) : (
@@ -78,9 +71,9 @@ function NewGamePage() {
 							<button
 								className={styles.buttonEnterName}
 								disabled={user === ''}
-								onClick={createGame}
+								onClick={() => createGame(roomId, user, roomLimit, setUser)}
 							>
-								&#9876;
+								{START_GAME_LABEL}
 							</button>
 						</div>
 					</div>
@@ -88,7 +81,7 @@ function NewGamePage() {
 						<h3 className={styles.titleForInput}>List of active games</h3>
 						<button onClick={openList} className={styles.buttonEnterName}>
 							{' '}
-							&#9876;
+							{START_GAME_LABEL}
 						</button>
 					</div>
 					<div className={styles.inputs}>
@@ -103,9 +96,9 @@ function NewGamePage() {
 							<button
 								className={styles.buttonEnterName}
 								disabled={joinUrl === ''}
-								onClick={joinGame}
+								onClick={() => joinGame(joinUrl, user, setUser)}
 							>
-								&#9876;
+								{START_GAME_LABEL}
 							</button>
 						</div>
 					</div>

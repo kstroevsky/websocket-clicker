@@ -3,12 +3,14 @@ import { io } from 'socket.io-client';
 import ListOfRooms from './ListOfRooms';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../pages/styles.module.scss';
+import { START_GAME_LABEL } from '../../utils/variables';
 
 let socket;
 export const Rooms = () => {
 	const navigate = useNavigate();
 	const [rooms, setRooms] = useState({});
 	const location = useLocation();
+
 	useEffect(() => {
 		socket = io('http://localhost:4000', { transports: ['websocket'] });
 		socket.on('allRooms', data => {
@@ -31,7 +33,7 @@ export const Rooms = () => {
 				{`${location.state.name}, Chose a game or press button to create new game`}
 			</h3>
 			<button className={styles.buttonEnterName} onClick={() => navigate('/')}>
-				&#9876;
+				{START_GAME_LABEL}
 			</button>
 			{!!rooms &&
 				Object.keys(rooms).map((key, index) => {
