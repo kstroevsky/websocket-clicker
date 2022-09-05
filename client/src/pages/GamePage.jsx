@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
-import OpponentCounter from '../components/OponentCounter';
 import { COPY_LABEL, GO_HOME_LABEL, SOCKET_URL } from '../utils/variables';
 import { copy } from '../utils/utils';
 import { io } from 'socket.io-client';
 import { ClickCount } from '../components/ClickCount';
+import { DisplayTimer } from './../components/DisplayTimer';
 
 let socket;
 function GamePage() {
@@ -58,7 +58,7 @@ function GamePage() {
 
 	return (
 		<div className={styles.gameWrapper}>
-			<div style={{ dislplay: 'flex' }}>
+			<div style={{ display: 'flex' }}>
 				<button
 					title="COPY"
 					className={styles.buttonEnterName}
@@ -83,21 +83,13 @@ function GamePage() {
 					gameStarted={gameStarted}
 					countHandler={countHandler}
 				/>
-				<div className={styles.oponentsWrapper}>
-					{roomUsers.map((i, index) => (
-						<OpponentCounter key={index} i={i} data={data} />
-					))}
-				</div>
-				<div className={styles.timeLeft}>
-					{timeLeft > 0 ? timeLeft : 'Game Over'}
-				</div>
-				{gameStarted ? (
-					<div>Current Leader {winner}</div>
-				) : (
-					<div className={styles.winnerTitle}>
-						{timeLeft === 0 && !gameStarted && `Player ${winner} WIN`}
-					</div>
-				)}
+				<DisplayTimer
+					roomUsers={roomUsers}
+					winner={winner}
+					gameStarted={gameStarted}
+					timeLeft={timeLeft}
+					data={data}
+				/>
 			</div>
 		</div>
 	);
