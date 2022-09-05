@@ -3,17 +3,16 @@ import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 import OpponentCounter from '../components/OponentCounter';
-import { COPY_LABEL, GO_HOME_LABEL } from '../utils/variables';
+import { COPY_LABEL, GO_HOME_LABEL, SOCKET_URL } from '../utils/variables';
 import { copy } from '../utils/utils';
 import { io } from 'socket.io-client';
+import { ClickCount } from '../components/ClickCount';
 
 let socket;
-
 function GamePage() {
 	const navigate = useNavigate();
 	const { roomId, userName, roomLimit } = useParams();
 	const [roomUsers, setRoomUsers] = useState([]);
-	const [count, setCount] = useState(0);
 	const [data, setData] = useState([]);
 	const [gameStarted, setGameStarted] = useState(false);
 	const [timeLeft, setTimeLeft] = useState(5);
@@ -39,7 +38,7 @@ function GamePage() {
 	}, [gameStarted, roomLimit, roomUsers, timeLeft]);
 
 	useEffect(() => {
-		socket = io('http://localhost:4000', { transports: ['websocket'] });
+		socket = io(SOCKET_URL, { transports: ['websocket'] });
 		const handler = msg => setData(prev => [...prev, msg]);
 		socket.on('message', handler);
 		socket.emit('joinRoom', { roomId, userName, roomLimit });
@@ -51,7 +50,7 @@ function GamePage() {
 		};
 	}, [roomId, roomLimit, userName]);
 
-	const countHandler = () => {
+	const countHandler = (count, setCount) => {
 		socket.emit('userMsg', count);
 		setCount(prev => prev + 1);
 	};
@@ -79,25 +78,16 @@ function GamePage() {
 				GO
 			</div>
 			<div>
-				<div className={styles.playerInfo}>
-					<button
-						className={styles.addButton}
-						disabled={!gameStarted}
-						onClick={countHandler}
-					>
-						{gameStarted ? 'Add Count' : 'Waiting Players'}
-					</button>
-					<div className={styles.userName}>
-						{userName}: {count}
-					</div>
-				</div>
-
+				<ClickCount
+					userName={userName}
+					gameStarted={gameStarted}
+					countHandler={countHandler}
+				/>
 				<div className={styles.oponentsWrapper}>
 					{roomUsers.map((i, index) => (
 						<OpponentCounter key={index} i={i} data={data} />
 					))}
 				</div>
-
 				<div className={styles.timeLeft}>
 					{timeLeft > 0 ? timeLeft : 'Game Over'}
 				</div>
