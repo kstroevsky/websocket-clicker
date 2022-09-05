@@ -1,9 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 .idea
-# dependencies
+#client
 client/node_modules
 client/.pnp
 client/.pnp.js
+client/build
+client/coverage
+# dependencies
 /node_modules
 /.pnp
 .pnp.js
