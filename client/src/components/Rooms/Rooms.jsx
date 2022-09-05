@@ -3,16 +3,17 @@ import { io } from 'socket.io-client';
 import ListOfRooms from './ListOfRooms';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../pages/styles.module.scss';
-import { START_GAME_LABEL } from '../../utils/variables';
+import { SOCKET_URL, START_GAME_LABEL } from '../../utils/variables';
+import { useGameDetails } from './../../hooks/useGameDetails';
 
 let socket;
 export const Rooms = () => {
 	const navigate = useNavigate();
 	const [rooms, setRooms] = useState({});
 	const location = useLocation();
-
+	const { createGame } = useGameDetails();
 	useEffect(() => {
-		socket = io('http://localhost:4000', { transports: ['websocket'] });
+		socket = io(SOCKET_URL, { transports: ['websocket'] });
 		socket.on('allRooms', data => {
 			setRooms(data);
 			console.log(data);
@@ -24,7 +25,7 @@ export const Rooms = () => {
 	}, []);
 
 	const joinToRoom = ({ roomId, roomLimit }) => {
-		navigate(`/game/${roomId}/${location.state.name}/${roomLimit}`);
+		createGame(roomId, location.state.name, roomLimit);
 	};
 
 	return (
