@@ -28,6 +28,7 @@ function NewGamePage() {
 				setRoomLimit(e.currentTarget.value);
 		}
 	};
+	const isName = () => setNameEntered(prev => !prev);
 	const startGame = () => createGame(roomId, user, roomLimit, setUser);
 	const joinToGame = () => joinGame(joinUrl, user, setUser);
 	const openList = () => {
@@ -41,29 +42,24 @@ function NewGamePage() {
 			{!nameEntered ? (
 				<>
 					<div className={styles.nameInput}>
-						<input
-							onChange={e => setUser(e.currentTarget.value)}
-							placeholder="Enter The name"
+						<AddForm
+							onChangeText={setUser}
+							placeholder={'Enter The name'}
 							value={user}
-							type="text"
+							type={'text'}
+							disabledBtn={user === ''}
+							clickHandler={isName}
+							titleBtn={START_GAME_LABEL}
 						/>
 					</div>
-					<button
-						onClick={() => setNameEntered(prev => !prev)}
-						disabled={user === ''}
-						className={styles.buttonEnterName}
-					>
-						{START_GAME_LABEL}
-					</button>
 				</>
 			) : (
 				<div className={styles.inputsWrapper}>
 					<div className={styles.inputs}>
 						<h3 className={styles.titleForInput}>CREATE THE GAME</h3>
-
 						<div className={styles.nameInput}>
 							<AddForm
-								onChange={onChangeHandler}
+								onChangeText={onChangeHandler}
 								placeholder={'Enter The Max players'}
 								value={roomLimit}
 								type={'number'}
