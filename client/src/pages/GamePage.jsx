@@ -5,8 +5,8 @@ import styles from './styles.module.scss';
 import { COPY_LABEL, GO_HOME_LABEL, SOCKET_URL } from '../utils/variables';
 import { copy } from '../utils/utils';
 import { io } from 'socket.io-client';
-import { ClickCount } from '../components/ClickCount';
-import { DisplayTimer } from './../components/DisplayTimer';
+import { ClickCount } from './../components/GameDetails/ClickCount';
+import { DisplayTimer } from './../components/GameDetails/DisplayTimer';
 
 let socket;
 function GamePage() {

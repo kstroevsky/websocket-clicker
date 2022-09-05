@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 import { START_GAME_LABEL } from '../utils/variables';
 import { useGameDetails } from '../hooks/useGameDetails';
+import { AddForm } from './../components/GameDetails/AddForm';
 
 function NewGamePage() {
 	const roomId = uuid();
@@ -13,14 +14,13 @@ function NewGamePage() {
 	const [nameEntered, setNameEntered] = useState(false);
 
 	const { createGame, joinGame } = useGameDetails();
-
 	const navigate = useNavigate();
+
 	const onChangeHandler = e => {
 		switch (e.currentTarget.value) {
-			case e.currentTarget.value < 2: {
+			case e.currentTarget.value < 2:
 				setRoomLimit(2);
 				break;
-			}
 			case e.currentTarget.value > 5:
 				setRoomLimit(5);
 				break;
@@ -28,10 +28,12 @@ function NewGamePage() {
 				setRoomLimit(e.currentTarget.value);
 		}
 	};
-
+	const startGame = () => createGame(roomId, user, roomLimit, setUser);
+	const joinToGame = () => joinGame(joinUrl, user, setUser);
 	const openList = () => {
 		navigate('/rooms', { state: { name: user } });
 	};
+
 	return (
 		<div className={styles.newGamePageWrapper}>
 			<h1 className="font-effect-fire-animation">C L I C K E R</h1>
@@ -60,21 +62,17 @@ function NewGamePage() {
 						<h3 className={styles.titleForInput}>CREATE THE GAME</h3>
 
 						<div className={styles.nameInput}>
-							<input
+							<AddForm
 								onChange={onChangeHandler}
-								placeholder="Enter The Max players"
+								placeholder={'Enter The Max players'}
 								value={roomLimit}
-								type="number"
+								type={'number'}
 								min={2}
 								max={5}
+								disabledBtn={user === ''}
+								clickHandler={startGame}
+								titleBtn={START_GAME_LABEL}
 							/>
-							<button
-								className={styles.buttonEnterName}
-								disabled={user === ''}
-								onClick={() => createGame(roomId, user, roomLimit, setUser)}
-							>
-								{START_GAME_LABEL}
-							</button>
 						</div>
 					</div>
 					<div className={styles.inputs}>
@@ -87,19 +85,15 @@ function NewGamePage() {
 					<div className={styles.inputs}>
 						<h3 className={styles.titleForInput}>JOIN THE GAME</h3>
 						<div className={styles.nameInput}>
-							<input
-								onChange={e => setJoinUrl(e.target.value)}
-								placeholder="ADD HTTP"
+							<AddForm
+								onChangeText={setJoinUrl}
+								placeholder={'ADD HTTP'}
 								value={joinUrl}
-								type="text"
+								type={'text'}
+								disabledBtn={user === ''}
+								clickHandler={joinToGame}
+								titleBtn={START_GAME_LABEL}
 							/>
-							<button
-								className={styles.buttonEnterName}
-								disabled={joinUrl === ''}
-								onClick={() => joinGame(joinUrl, user, setUser)}
-							>
-								{START_GAME_LABEL}
-							</button>
 						</div>
 					</div>
 				</div>

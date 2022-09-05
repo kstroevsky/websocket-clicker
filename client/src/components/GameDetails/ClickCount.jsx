@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './../pages/styles.module.scss';
+import styles from './../../pages/styles.module.scss';
 
 export const ClickCount = ({ countHandler, gameStarted, userName }) => {
 	const [count, setCount] = useState(0);

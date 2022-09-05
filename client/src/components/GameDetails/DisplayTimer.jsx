@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './../pages/styles.module.scss';
-import OpponentCounter from './OponentCounter/index';
+import styles from './../../pages/styles.module.scss';
+import OpponentCounter from './../OponentCounter/index';
 
 export const DisplayTimer = ({
 	roomUsers,
