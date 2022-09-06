@@ -29,8 +29,14 @@ function NewGamePage() {
 		}
 	};
 	const isName = () => setNameEntered(prev => !prev);
-	const startGame = () => createGame(roomId, user, roomLimit, setUser);
-	const joinToGame = () => joinGame(joinUrl, user, setUser);
+	const startGame = () => {
+		createGame(roomId, user, roomLimit);
+		setUser('');
+	};
+	const joinToGame = () => {
+		joinGame(joinUrl, user, setUser);
+		setUser('');
+	};
 	const openList = () => {
 		navigate('/rooms', { state: { name: user } });
 	};
@@ -59,7 +65,7 @@ function NewGamePage() {
 						<h3 className={styles.titleForInput}>CREATE THE GAME</h3>
 						<div className={styles.nameInput}>
 							<AddForm
-								onChangeText={onChangeHandler}
+								onChange={onChangeHandler}
 								placeholder={'Enter The Max players'}
 								value={roomLimit}
 								type={'number'}

@@ -7,15 +7,20 @@ export default function ListOfRooms({
 	joinToRoom,
 	roomLimit,
 	users,
+	players,
 }) {
+	const isFullStyle =
+		roomLimit > players ? styles.roomWrapper : styles.fullRoom;
+	const title = roomLimit > players ? `Let's go to play with:` : 'Game started';
+
 	return (
 		<div
-			className={styles.roomWrapper}
+			className={isFullStyle}
 			key={index}
-			onClick={() => joinToRoom({ roomId, roomLimit })}
+			onClick={() => joinToRoom({ roomId, roomLimit, players })}
 		>
-			<h3 className={styles.titleForInput}>
-				<span>room of players:</span>
+			<h3 className={styles.roomTitle}>
+				<span>{title} </span>
 			</h3>
 			<dl>
 				<dt>{users}</dt>

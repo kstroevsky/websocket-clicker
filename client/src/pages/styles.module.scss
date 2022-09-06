@@ -1,12 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Anton&effect=fire-animation);
-
-.fullRoom {
-	color: red;
-	font-size: 28px;
-	display: flex;
-	justify-content: center;
-}
-
 .gameWrapper {
 	padding: 0 20px;
 	color: white;
@@ -212,8 +204,26 @@ li {
 	text-transform: uppercase;
 }
 .roomWrapper {
-	border: 1px solid #fff;
-	padding: 10px;
-	margin: 10px;
+	background: rgb(22, 22, 30);
+	box-shadow: -12px -12px 24px #2e2e2e, 12px 12px 24px #1e1e1e;
+	border-radius: 13px;
+	padding: 20px;
+	margin: 20px;
 	cursor: pointer;
+	width: 200px;
+	min-height: 200px;
+}
+.fullRoom {
+	opacity: 0.5;
+	background: rgb(22, 22, 30);
+	box-shadow: -12px -12px 24px #2e2e2e, 12px 12px 24px #1e1e1e;
+	border-radius: 13px;
+	border: 1px solid red;
+	padding: 20px;
+	margin: 20px;
+	width: 200px;
+	min-height: 200px;
+}
+.roomTitle {
+	font-size: 20px;
 }

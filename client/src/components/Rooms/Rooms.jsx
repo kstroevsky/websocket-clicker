@@ -16,7 +16,6 @@ export const Rooms = () => {
 		socket = io(SOCKET_URL, { transports: ['websocket'] });
 		socket.on('allRooms', data => {
 			setRooms(data);
-			console.log(data);
 		});
 		return () => {
 			socket.disconnect();
@@ -24,8 +23,8 @@ export const Rooms = () => {
 		};
 	}, []);
 
-	const joinToRoom = ({ roomId, roomLimit }) => {
-		createGame(roomId, location.state.name, roomLimit);
+	const joinToRoom = ({ roomId, roomLimit, players }) => {
+		roomLimit > players && createGame(roomId, location.state.name, roomLimit);
 	};
 
 	return (
@@ -36,26 +35,30 @@ export const Rooms = () => {
 			<button className={styles.buttonEnterName} onClick={() => navigate('/')}>
 				{START_GAME_LABEL}
 			</button>
-			{!!rooms &&
-				Object.keys(rooms).map((key, index) => {
-					const roomLimit = rooms[key][0].roomLimit;
-					const users = rooms[key].map(n => (
-						<ul key={n.id}>
-							<li>{n.userName}</li>
-						</ul>
-					));
-					return (
-						<div key={index}>
-							<ListOfRooms
-								key={index}
-								joinToRoom={joinToRoom}
-								roomId={key}
-								roomLimit={roomLimit}
-								users={users}
-							/>
-						</div>
-					);
-				})}
+			<div style={{ display: 'flex' }}>
+				{!!rooms &&
+					Object.keys(rooms).map((key, index) => {
+						const roomLimit = rooms[key][0].roomLimit;
+						const players = rooms[key].length;
+						const users = rooms[key].map(room => (
+							<ul key={room.id}>
+								<li>{room.userName}</li>
+							</ul>
+						));
+						return (
+							<div key={index}>
+								<ListOfRooms
+									players={players}
+									key={index}
+									joinToRoom={joinToRoom}
+									roomId={key}
+									roomLimit={roomLimit}
+									users={users}
+								/>
+							</div>
+						);
+					})}
+			</div>
 		</div>
 	);
 };
