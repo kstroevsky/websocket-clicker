@@ -37,27 +37,22 @@ export const Rooms = () => {
 			</button>
 			<div style={{ display: 'flex' }}>
 				{!!rooms &&
-					Object.keys(rooms).map((key, index) => {
-						const roomLimit = rooms[key][0].roomLimit;
-						const players = rooms[key].length;
-						const users = rooms[key].map(room => (
-							<ul key={room.id}>
-								<li>{room.userName}</li>
-							</ul>
-						));
-						return (
-							<div key={index}>
-								<ListOfRooms
-									players={players}
-									key={index}
-									joinToRoom={joinToRoom}
-									roomId={key}
-									roomLimit={roomLimit}
-									users={users}
-								/>
-							</div>
-						);
-					})}
+					Object.keys(rooms).map((key, index) => (
+						<div key={index}>
+							<ListOfRooms
+								players={rooms[key].length}
+								key={index}
+								joinToRoom={joinToRoom}
+								roomId={key}
+								roomLimit={rooms[key][0].roomLimit}
+								users={rooms[key].map(room => (
+									<ul key={room.id}>
+										<li>{room.userName}</li>
+									</ul>
+								))}
+							/>
+						</div>
+					))}
 			</div>
 		</div>
 	);

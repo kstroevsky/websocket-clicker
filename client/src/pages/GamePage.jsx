@@ -55,6 +55,9 @@ function GamePage() {
 		setCount(prev => prev + 1);
 	};
 	const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
+	const isStartedStyle = gameStarted
+		? styles.startGame
+		: styles.startGameHidden;
 
 	return (
 		<div className={styles.gameWrapper}>
@@ -74,9 +77,7 @@ function GamePage() {
 					{GO_HOME_LABEL}
 				</button>
 			</div>
-			<div className={gameStarted ? styles.startGame : styles.startGameHidden}>
-				GO
-			</div>
+			<div className={isStartedStyle}>GO</div>
 			<div>
 				<ClickCount
 					userName={userName}

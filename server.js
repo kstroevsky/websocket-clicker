@@ -2,9 +2,7 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-
-
-const formatMesage = (userName, text) => {
+const formatMessage = (userName, text) => {
 	return {
 		userName,
 		text,
@@ -15,28 +13,27 @@ const botName = 'Game Bot';
 
 const users = [];
 
-
 const userJoin = (id, userName, room, roomLimit) => {
-	const user = {
-		id,
-		userName,
-		room,
-		roomLimit,
-	};
-	users.push(user);
-	return user;
+	users.push({ id, userName, room, roomLimit });
+	return users.slice(-1)[0];
 };
+
 const getCurrentUser = id => users.find(user => user.id === id);
 
 const userLeave = id => {
 	const index = users.findIndex(user => user.id === id);
-	if (index !== -1) {
-		return users.splice(index, 1)[0];
-	}
+	if (index !== -1) return users.splice(index, 1)[0];
 };
 const getRoomUsers = room => users.filter(user => user.room === room);
 
-const addRooms = arr => arr.reduce((acc, cur) => ({ ...acc, [cur['room']]: acc[cur['room']] ? [...acc[cur['room']], cur] : [cur] }), {});
+const addRooms = arr =>
+	arr.reduce(
+		(acc, cur) => ({
+			...acc,
+			[cur['room']]: acc[cur['room']] ? [...acc[cur['room']], cur] : [cur],
+		}),
+		{}
+	);
 
 io.on('connection', socket => {
 	socket.on('joinRoom', ({ roomId, userName, roomLimit }) => {
@@ -50,10 +47,11 @@ io.on('connection', socket => {
 			});
 			socket.on('userMsg', msg => {
 				const user = getCurrentUser(socket.id);
-				io.to(user.room).emit('message', formatMesage(user.userName, msg));
+				io.to(user.room).emit('message', formatMessage(user.userName, msg));
 			});
 		}
 	});
+
 	socket.emit('allRooms', addRooms(users));
 
 	socket.on('disconnect', () => {
@@ -61,7 +59,7 @@ io.on('connection', socket => {
 		if (user) {
 			io.to(user.room).emit(
 				'message',
-				formatMesage(botName, `${user.userName} has left the room`)
+				formatMessage(botName, `${user.userName} has left the room`)
 			);
 
 			io.to(user.room).emit('roomUsers', {

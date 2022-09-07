@@ -17,7 +17,7 @@ function NewGamePage() {
 	const navigate = useNavigate();
 
 	const onChangeHandler = e => {
-		switch (e.currentTarget.value) {
+		switch (true) {
 			case e.currentTarget.value < 2:
 				setRoomLimit(2);
 				break;
@@ -40,26 +40,11 @@ function NewGamePage() {
 	const openList = () => {
 		navigate('/rooms', { state: { name: user } });
 	};
-
 	return (
 		<div className={styles.newGamePageWrapper}>
 			<h1 className="font-effect-fire-animation">C L I C K E R</h1>
 
-			{!nameEntered ? (
-				<>
-					<div className={styles.nameInput}>
-						<AddForm
-							onChangeText={setUser}
-							placeholder={'Enter The name'}
-							value={user}
-							type={'text'}
-							disabledBtn={user === ''}
-							clickHandler={isName}
-							titleBtn={START_GAME_LABEL}
-						/>
-					</div>
-				</>
-			) : (
+			{nameEntered ? (
 				<div className={styles.inputsWrapper}>
 					<div className={styles.inputs}>
 						<h3 className={styles.titleForInput}>CREATE THE GAME</h3>
@@ -99,6 +84,20 @@ function NewGamePage() {
 						</div>
 					</div>
 				</div>
+			) : (
+				<>
+					<div className={styles.nameInput}>
+						<AddForm
+							onChangeText={setUser}
+							placeholder={'Enter The name'}
+							value={user}
+							type={'text'}
+							disabledBtn={user === ''}
+							clickHandler={isName}
+							titleBtn={START_GAME_LABEL}
+						/>
+					</div>
+				</>
 			)}
 		</div>
 	);
