@@ -11,14 +11,14 @@
  or
  `yarn`
  ### dev mode
- `yarn dev` or `npm dev`
+ `yarn dev` or `npm run dev`
  ### product mode
- `yarn start` or `npm start`
+ `yarn start` or `npm run start`
  ## front-end
  **Open the _second_ terminal tab and use follow instructions:**
  - `cd client`
  ### short:
  - `npm install` or `yarn`
- - `npm start` or `yarn start`
+ - `npm run start` or `yarn start`
  ### long:
  See here: [Frontend README](https://github.com/kstroevsky/hivex-websocket-clicker/blob/main/client/README.md)
