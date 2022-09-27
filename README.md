@@ -16,7 +16,7 @@
  `yarn start` or `npm start`
  ## front-end
  **Open the _second_ terminal tab and use follow instructions:**
- `cd client`
+ - `cd client`
  ### short:
  - `npm install` or `yarn`
  - `npm start` or `yarn start`
