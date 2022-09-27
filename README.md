@@ -16,9 +16,9 @@
  `yarn start` or `npm start`
  ## front-end
  **Open the _second_ terminal tab and use follow instructions:**
- ### short
- - `cd client`
+ `cd client`
+ ### short:
  - `npm install` or `yarn`
  - `npm start` or `yarn start`
- ### long
+ ### long:
  See here: [Frontend README](https://github.com/kstroevsky/hivex-websocket-clicker/blob/main/client/README.md)
