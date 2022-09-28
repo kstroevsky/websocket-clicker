@@ -8,6 +8,7 @@ export default function ListOfRooms({
 	roomLimit,
 	users,
 	players,
+  gameDuration,
 }) {
 	const isFullStyle =
 		roomLimit > players ? styles.roomWrapper : styles.fullRoom;
@@ -17,7 +18,7 @@ export default function ListOfRooms({
 		<div
 			className={isFullStyle}
 			key={index}
-			onClick={() => joinToRoom({ roomId, roomLimit, players })}
+			onClick={() => joinToRoom({ roomId, roomLimit, players, gameDuration })}
 		>
 			<h3 className={styles.roomTitle}>
 				<span>{title} </span>

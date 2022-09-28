@@ -23,8 +23,10 @@ export const Rooms = () => {
 		};
 	}, []);
 
-	const joinToRoom = ({ roomId, roomLimit, players }) => {
-		roomLimit > players && createGame(roomId, location.state.name, roomLimit);
+  console.log(rooms);
+
+	const joinToRoom = ({ roomId, roomLimit, players, gameDuration }) => {
+		roomLimit > players && createGame(roomId, location.state.name, roomLimit, gameDuration);
 	};
 
 	return (
@@ -44,6 +46,7 @@ export const Rooms = () => {
 								key={index}
 								joinToRoom={joinToRoom}
 								roomId={key}
+                gameDuration={rooms[key][0].gameDuration}
 								roomLimit={rooms[key][0].roomLimit}
 								users={rooms[key].map(room => (
 									<ul key={room.id}>

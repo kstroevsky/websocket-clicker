@@ -5,18 +5,20 @@ import styles from './styles.module.scss';
 import { START_GAME_LABEL } from '../utils/variables';
 import { useGameDetails } from '../hooks/useGameDetails';
 import { AddForm } from './../components/GameDetails/AddForm';
+import { CreateGameForm } from '../components/GameDetails/CreateGameForm';
 
 function NewGamePage() {
 	const roomId = uuid();
 	const [user, setUser] = useState('');
 	const [joinUrl, setJoinUrl] = useState('');
-	const [roomLimit, setRoomLimit] = useState(2);
+	const [roomLimit, setRoomLimit] = useState('');
+  const [gameDuration, setGameDuration] = useState('');
 	const [nameEntered, setNameEntered] = useState(false);
 
 	const { createGame, joinGame } = useGameDetails();
 	const navigate = useNavigate();
 
-	const onChangeHandler = e => {
+	const onChangeRoomLimitHandler = e => {
 		switch (true) {
 			case e.currentTarget.value < 2:
 				setRoomLimit(2);
@@ -28,9 +30,23 @@ function NewGamePage() {
 				setRoomLimit(e.currentTarget.value);
 		}
 	};
+
+	const onChangeGameDurationHandler = e => {
+		switch (true) {
+			case e.currentTarget.value < 10:
+				setGameDuration(10);
+				break;
+			case e.currentTarget.value > 60:
+				setGameDuration(60);
+				break;
+			default:
+				setGameDuration(e.currentTarget.value);
+		}
+	};
+
 	const isName = () => setNameEntered(prev => !prev);
 	const startGame = () => {
-		createGame(roomId, user, roomLimit);
+		createGame(roomId, user, roomLimit, gameDuration);
 		setUser('');
 	};
 	const joinToGame = () => {
@@ -48,15 +64,13 @@ function NewGamePage() {
 				<div className={styles.inputsWrapper}>
 					<div className={styles.inputs}>
 						<h3 className={styles.titleForInput}>CREATE THE GAME</h3>
-						<div className={styles.nameInput}>
-							<AddForm
-								onChange={onChangeHandler}
-								placeholder={'Enter The Max players'}
-								value={roomLimit}
-								type={'number'}
-								min={2}
-								max={5}
-								disabledBtn={user === ''}
+						<div className={styles.gameCreateInput}>
+							<CreateGameForm
+								valueRoomLimit={roomLimit}
+								onChangeRoomLimit={onChangeRoomLimitHandler}
+                valueGameDuration={gameDuration}
+                onChangeGameDuration={onChangeGameDurationHandler}
+								disabledBtn={user === '' || roomLimit === '' || gameDuration === ''}
 								clickHandler={startGame}
 								titleBtn={START_GAME_LABEL}
 							/>

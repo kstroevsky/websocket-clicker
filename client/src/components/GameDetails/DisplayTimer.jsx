@@ -1,4 +1,6 @@
 import React from 'react';
+import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './../../pages/styles.module.scss';
 import OpponentCounter from './../OponentCounter/index';
 
@@ -8,6 +10,7 @@ export const DisplayTimer = ({
 	timeLeft,
 	gameStarted,
 	winner,
+  gameTime,
 }) => {
 	return (
 		<>
@@ -18,13 +21,13 @@ export const DisplayTimer = ({
 				))}
 			</div>
 			<div className={styles.timeLeft}>
-				{timeLeft > 0 ? timeLeft : 'Game Over'}
+				{timeLeft > 0 ? timeLeft : gameTime > 0 ? gameTime : 'Game Over' }
 			</div>
 			{gameStarted ? (
 				<div>Current Leader {winner}</div>
 			) : (
 				<div className={styles.winnerTitle}>
-					{timeLeft === 0 && !gameStarted && `Player ${winner} WIN`}
+					{gameTime === 0 && !gameStarted && `Player ${winner} WIN`}
 				</div>
 			)}
 		</>

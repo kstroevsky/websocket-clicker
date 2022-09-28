@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
@@ -11,44 +11,57 @@ import { DisplayTimer } from './../components/GameDetails/DisplayTimer';
 let socket;
 function GamePage() {
 	const navigate = useNavigate();
-	const { roomId, userName, roomLimit } = useParams();
+	const { roomId, userName, roomLimit, gameDuration } = useParams();
 	const [roomUsers, setRoomUsers] = useState([]);
 	const [data, setData] = useState([]);
 	const [gameStarted, setGameStarted] = useState(false);
 	const [timeLeft, setTimeLeft] = useState(5);
+  const [gameTime, setGameTime] = useState(gameDuration);
 
-	useEffect(() => {
-		const isTimeUp = timeLeft === 0;
-		switch (true) {
-			case gameStarted && isTimeUp:
-				setGameStarted(false);
-				break;
-			case +roomLimit === roomUsers.length:
-				const intervalId = setInterval(() => {
-					setTimeLeft(prev => prev - 1);
-				}, 1000);
-				if (!gameStarted && isTimeUp) {
-					setGameStarted(true);
-					setTimeLeft(10);
-				}
-				return () => clearInterval(intervalId);
-			default:
-				setGameStarted(false);
-		}
-	}, [gameStarted, roomLimit, roomUsers, timeLeft]);
+  const isTimeUp = timeLeft === 0;
+  const gameTimeout = useRef(null);
+
+  useEffect(() => {
+    if (+roomLimit === roomUsers.length) {
+        const intervalId = setInterval(() => {
+        setTimeLeft(prev => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [roomUsers.length, roomLimit]);
+
+  useEffect(() => {
+    if (!gameStarted && isTimeUp) {
+      setGameStarted(true);
+    }
+  }, [isTimeUp]);
+
+  useEffect(() => {
+      if (gameStarted) {
+        const intervalId = setInterval(() => {
+          setGameTime(prev => prev - 1);
+        }, 1000);
+  
+        gameTimeout.current = setTimeout(() => {
+          setGameStarted(false);
+           clearInterval(intervalId);
+        }, 1000 * gameDuration);
+      }
+    }, [gameStarted])
 
 	useEffect(() => {
 		socket = io(SOCKET_URL, { transports: ['websocket'] });
 		const handler = msg => setData(prev => [...prev, msg]);
 		socket.on('message', handler);
-		socket.emit('joinRoom', { roomId, userName, roomLimit });
+		socket.emit('joinRoom', { roomId, userName, roomLimit, gameDuration });
 		socket.on('roomUsers', ({ room, users }) => {
 			setRoomUsers(users);
 		});
 		return () => {
 			socket.disconnect();
 		};
-	}, [roomId, roomLimit, userName]);
+	}, [roomId, roomLimit, userName, gameDuration]);
 
 	const countHandler = (count, setCount) => {
 		socket.emit('userMsg', count);
@@ -90,6 +103,7 @@ function GamePage() {
 					gameStarted={gameStarted}
 					timeLeft={timeLeft}
 					data={data}
+          gameTime={gameTime}
 				/>
 			</div>
 		</div>

@@ -63,6 +63,27 @@ p {
 	padding: 20px;
 	justify-content: center;
 }
+
+.gameCreateInput {
+	display: flex;
+	padding: 20px;
+	justify-content: center;
+}
+
+.gameCreateInput input {
+	padding: 20px;
+	border-radius: 10px;
+  width: 125px;
+	outline: none;
+	border: none;
+	background-color: antiquewhite;
+	animation: neon3 1.5s ease-in-out infinite alternate;
+
+    &:first-of-type{
+      margin-right: 30px;
+    }
+}
+
 .nameInput input {
 	padding: 20px;
 	border-radius: 10px;
