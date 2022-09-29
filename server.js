@@ -13,8 +13,8 @@ const botName = 'Game Bot';
 
 const users = [];
 
-const userJoin = (id, userName, room, roomLimit) => {
-	users.push({ id, userName, room, roomLimit });
+const userJoin = (id, userName, room, roomLimit, gameDuration) => {
+	users.push({ id, userName, room, roomLimit, gameDuration });
 	return users.slice(-1)[0];
 };
 
@@ -36,9 +36,9 @@ const addRooms = arr =>
 	);
 
 io.on('connection', socket => {
-	socket.on('joinRoom', ({ roomId, userName, roomLimit }) => {
+	socket.on('joinRoom', ({ roomId, userName, roomLimit, gameDuration }) => {
 		if (getRoomUsers(roomId).length < roomLimit) {
-			const user = userJoin(socket.id, userName, roomId, roomLimit);
+			const user = userJoin(socket.id, userName, roomId, roomLimit, gameDuration);
 			console.log(getRoomUsers(roomId).length, roomLimit, user.room);
 			socket.join(user.room);
 			io.to(user.room).emit('roomUsers', {

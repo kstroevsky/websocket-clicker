@@ -9,7 +9,7 @@ function App() {
 			<>
 				<Routes>
 					<Route
-						path="/game/:roomId/:userName/:roomLimit"
+						path="/game/:roomId/:userName/:roomLimit/:gameDuration"
 						element={<GamePage />}
 					/>
 					<Route path="/" element={<NewGamePage />} />
