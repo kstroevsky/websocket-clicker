@@ -23,9 +23,7 @@ function GamePage() {
 
   useEffect(() => {
     if (+roomLimit === roomUsers.length) {
-        const intervalId = setInterval(() => {
-        setTimeLeft(prev => prev - 1);
-      }, 1000);
+      const intervalId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
 
       return () => clearInterval(intervalId);
     }
