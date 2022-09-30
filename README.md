@@ -6,6 +6,8 @@
  - add store (Mobx) to memorizing user and game params and reduce params from URL **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/8)**
  - add style switching **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/9)**
  - add more tests  **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/11)**
+ - try to move the project from socket.io to WebSocket API **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/15)**
+ - try to dockerize project **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/14)**
  - deploy on heroku/vercel **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/10)**
  ## back-end
  **Open the _first_ terminal tab and use follow instructions:**
