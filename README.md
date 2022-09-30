@@ -1,4 +1,12 @@
 ﻿# hivex-websocket-clicker
+ ## About
+ This project provide multiplayer ability to a simply Clicker (Counter) functionality with websockets.
+ You can create user, game (with room limit and duration) and join the game by another user (i.e. by another browser).
+ ## Goals
+ - add store (Mobx) to memorizing user and game params and reduce params from URL **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/8)**
+ - add style switching **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/9)**
+ - add more tests  **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/11)**
+ - deploy on heroku/vercel **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/10)**
  ## back-end
  **Open the _first_ terminal tab and use follow instructions:**
  ### install requirements packages
