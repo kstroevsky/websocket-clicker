@@ -1,4 +1,10 @@
 ﻿# hivex-websocket-clicker
+ ## About
+ This project provide multiplayer ability to a simply Clicker (Counter) functionality with websockets.
+ ## Goals
+ - add store (Mobx) to memorizing user and game params and reduce params from URL
+ - add style switching
+ - deploy on heroku/vercel
  ## back-end
  **Open the _first_ terminal tab and use follow instructions:**
  ### install requirements packages
