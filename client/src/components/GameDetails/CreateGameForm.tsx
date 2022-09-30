@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {ChangeEvent, FC} from 'react';
+import {CreateGameFormPropsT} from "types/components";
 import styles from './../../pages/styles.module.scss';
 
-export const CreateGameForm = ({
+export const CreateGameForm:FC<CreateGameFormPropsT> = ({
   onChangeRoomLimit,
   valueRoomLimit,
   valueGameDuration,
