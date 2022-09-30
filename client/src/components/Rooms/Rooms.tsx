@@ -9,7 +9,6 @@ import {useGameDetails} from '../../hooks/useGameDetails';
 
 let socket: Socket;
 
-
 export const Rooms = () => {
     const navigate = useNavigate();
     const [rooms, setRooms] = useState<RoomsT>({});
@@ -53,10 +52,7 @@ export const Rooms = () => {
                                 roomId={key}
                                 gameDuration={rooms[key][0].gameDuration}
                                 roomLimit={rooms[key][0].roomLimit}
-
-                                //TODO: Разобраться с типом
-
-                                users={rooms[key].map((room: any) => (
+                                users={rooms[key].map((room) => (
                                     <ul key={room.id}>
                                         <li>{room.userName}</li>
                                     </ul>
