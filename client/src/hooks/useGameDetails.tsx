@@ -2,6 +2,7 @@ import {useNavigate} from 'react-router-dom';
 
 export const useGameDetails = () => {
     const navigate = useNavigate();
+
     const createGame = (roomId: string, user: string, roomLimit: number, gameDuration: number) => {
         navigate(`/game/${roomId}/${user}/${roomLimit}/${gameDuration}`);
     };

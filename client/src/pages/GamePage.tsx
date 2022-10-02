@@ -22,14 +22,20 @@ const GamePage = observer(() => {
         setUrlGame,
         setName
     } = appStore
-    console.log(appStore)
-    const {room, roomLimit, gameDuration, userName} = user
+    const {room: roomId, roomLimit, gameDuration, userName} = user
     const [roomUsers, setRoomUsers] = useState<User[]>(users || []);
     const [data, setData] = useState<{ userName: string, text: number }[]>([]);
     const [timeLeft, setTimeLeft] = useState<number>(5);
     const [gameTime, setGameTime] = useState<number>(Number(gameDuration) || 10);
     const isTimeUp = timeLeft === 0;
     const gameTimeout = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+        const gameUrl = sessionStorage.getItem('gameUrl')
+        const nameInStorage = sessionStorage.getItem('user')
+        nameInStorage && setName(nameInStorage)
+        !!gameUrl && setUrlGame(gameUrl)
+    }, [setName, setUrlGame]);
 
     useEffect(() => {
         if (roomLimit && +roomLimit === roomUsers.length) {
@@ -40,7 +46,7 @@ const GamePage = observer(() => {
 
     useEffect(() => {
         if (!gameIsStarted && isTimeUp) setGameState(true);
-    }, [isTimeUp, gameIsStarted, setGameState]);
+    }, [isTimeUp, gameIsStarted]);
 
     useEffect(() => {
         if (gameIsStarted) {
@@ -50,7 +56,7 @@ const GamePage = observer(() => {
                 clearInterval(intervalId);
             }, 1000 * Number(gameDuration));
         }
-    }, [gameIsStarted, gameDuration, setGameState])
+    }, [gameIsStarted])
 
     useEffect(() => {
         socket = io(SOCKET_URL, {transports: ['websocket']});
@@ -58,22 +64,15 @@ const GamePage = observer(() => {
             setData((prev) => [...prev, msg])
         };
         socket.on('message', handler);
-        socket.emit('joinRoom', {room, userName, roomLimit, gameDuration});
-        socket.on('roomUsers', ({room, users}: { room: string, users: User[] }) => {
+        socket.emit('joinRoom', {roomId, userName, roomLimit, gameDuration});
+        socket.on('roomUsers', ({roomId, users}: { roomId: string, users: User[] }) => {
             setUsers(users)
             setRoomUsers(users);
         });
         return () => {
             socket.disconnect();
         };
-    }, [room, roomLimit, userName, gameDuration, setUsers]);
-
-    useEffect(() => {
-        const gameUrl = sessionStorage.getItem('gameUrl')
-        const nameInStorage = sessionStorage.getItem('user')
-        nameInStorage && setName(nameInStorage)
-        !!gameUrl && setUrlGame(gameUrl)
-    }, [setName, setUrlGame]);
+    }, [roomId, roomLimit, userName, gameDuration]);
 
 
     const countHandler = (count: number) => {

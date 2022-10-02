@@ -59,8 +59,8 @@ export const NewGamePage = observer(() => {
 
     };
     const startGame = () => {
-        createGame(roomId, nameUser, roomLimit, gameDuration);
         changeSettingsGame(roomId, roomLimit, gameDuration)
+        createGame(roomId, nameUser, roomLimit, gameDuration);
     };
     const joinToGame = () => {
         setUrlGame(joinUrl)
@@ -71,10 +71,10 @@ export const NewGamePage = observer(() => {
     };
     return (
         <div className={styles.newGamePageWrapper}>
-            <button onClick={exit} className={styles.exitBtn}>
+            {!!user.userName && < button onClick={exit} className={styles.exitBtn}>
                 <span
-                    className={`font-effect-fire-animation ${styles.exitBtn_text}`}>Exit</span>
-            </button>
+                className={`font-effect-fire-animation ${styles.exitBtn_text}`}>Exit</span>
+                </button>}
             <h1 className="font-effect-fire-animation">C L I C K E R</h1>
             {!!user.userName ? (
                 <div className={styles.inputsWrapper}>
