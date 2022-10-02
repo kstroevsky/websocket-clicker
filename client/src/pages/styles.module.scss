@@ -57,7 +57,8 @@ p {
   height: 100%;
   align-items: center;
   justify-content: center;
-  padding-left: 60px;
+  padding: 30px;
+  position: relative;
 }
 
 .nameInput {
@@ -98,12 +99,12 @@ p {
 @keyframes neon3 {
   from {
     box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ffdd1b,
-      0 0 70px #ffdd1b, 0 0 80px #ffdd1b, 0 0 100px #ffdd1b, 0 0 150px #ffdd1b;
+    0 0 70px #ffdd1b, 0 0 80px #ffdd1b, 0 0 100px #ffdd1b, 0 0 150px #ffdd1b;
   }
 
   to {
     box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ffdd1b,
-      0 0 35px #ffdd1b, 0 0 40px #ffdd1b, 0 0 50px #ffdd1b, 0 0 75px #ffdd1b;
+    0 0 35px #ffdd1b, 0 0 40px #ffdd1b, 0 0 50px #ffdd1b, 0 0 75px #ffdd1b;
   }
 }
 
@@ -256,4 +257,31 @@ li {
 
 .roomTitle {
   font-size: 20px;
+}
+
+.exitBtn {
+  position: absolute;
+  top: 4%;
+  right: 2%;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+
+  &_text {
+    background: none;
+    font-size: 22px;
+
+    &:hover {
+      background-color: rgba(246, 181, 42, 0.1);
+      transition: .1s ease-in-out;
+      box-shadow: 0 0 30px rgba(246, 181, 42, 0.75);
+    }
+  }
+
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+  }
 }

@@ -1,9 +1,7 @@
 import {observer} from "mobx-react-lite";
 import {useEffect, useState, useRef} from 'react';
-import {useParams} from 'react-router';
 import {useNavigate} from 'react-router-dom';
 import appStore from "stores/appStore";
-
 import {User} from "types/params";
 import styles from './styles.module.scss'
 import {COPY_LABEL, GO_HOME_LABEL, SOCKET_URL} from 'utils/variables';
@@ -15,9 +13,17 @@ import {DisplayTimer} from 'components/GameDetails/DisplayTimer';
 let socket: Socket;
 const GamePage = observer(() => {
     const navigate = useNavigate();
-
-    const {setUsers, users, setGameState, gameIsStarted, user} = appStore
-    const {room: roomId, roomLimit, gameDuration, userName} = user
+    const {
+        setUsers,
+        users,
+        setGameState,
+        gameIsStarted,
+        user,
+        setUrlGame,
+        setName
+    } = appStore
+    console.log(appStore)
+    const {room, roomLimit, gameDuration, userName} = user
     const [roomUsers, setRoomUsers] = useState<User[]>(users || []);
     const [data, setData] = useState<{ userName: string, text: number }[]>([]);
     const [timeLeft, setTimeLeft] = useState<number>(5);
@@ -52,7 +58,7 @@ const GamePage = observer(() => {
             setData((prev) => [...prev, msg])
         };
         socket.on('message', handler);
-        socket.emit('joinRoom', {roomId, userName, roomLimit, gameDuration});
+        socket.emit('joinRoom', {room, userName, roomLimit, gameDuration});
         socket.on('roomUsers', ({room, users}: { room: string, users: User[] }) => {
             setUsers(users)
             setRoomUsers(users);
@@ -60,7 +66,15 @@ const GamePage = observer(() => {
         return () => {
             socket.disconnect();
         };
-    }, [roomId, roomLimit, userName, gameDuration, setUsers]);
+    }, [room, roomLimit, userName, gameDuration, setUsers]);
+
+    useEffect(() => {
+        const gameUrl = sessionStorage.getItem('gameUrl')
+        const nameInStorage = sessionStorage.getItem('user')
+        nameInStorage && setName(nameInStorage)
+        !!gameUrl && setUrlGame(gameUrl)
+    }, [setName, setUrlGame]);
+
 
     const countHandler = (count: number) => {
         socket.emit('userMsg', count);

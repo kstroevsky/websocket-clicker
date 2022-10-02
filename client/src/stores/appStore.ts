@@ -1,4 +1,4 @@
-import {makeAutoObservable} from "mobx";
+import {makeAutoObservable, runInAction} from "mobx";
 import {User} from "types/params";
 
 class AppStore {
@@ -15,30 +15,45 @@ class AppStore {
         makeAutoObservable(this)
     }
 
+    setName = (name: string) => {
+        this.user.userName = name
+        runInAction(() => {
+            sessionStorage.setItem('user', name)
+        })
+    }
+    setUsers = (users: User[]) => {
+        this.users = users
+        users.map(u => u.userName === this.user.userName ? this.user.id = u.id : null)
+    }
+
+    changeSettingsGame = (roomId: string, roomLimit: number, gameDuration: number) => {
+        this.user = {...this.user, room: roomId, roomLimit, gameDuration}
+        this.setUrlGame(`http://localhost:3000/game/${roomId}/${this.user.userName}/${roomLimit}/${gameDuration}`)
+    }
+
+    setUrlGame = (joinUrl: string) => {
+        this.gameUrl = joinUrl
+        runInAction(() => {
+            sessionStorage.setItem('gameUrl', joinUrl)
+
+        })
+        const params = joinUrl.split('/')
+        this.user = {
+            ...this.user,
+            room: params[4],
+            roomLimit: +params[6],
+            gameDuration: +params[7]
+        }
+    }
+
     setGameState = (value: boolean) => {
         this.gameIsStarted = value
     }
 
-    setName = (name: string) => {
-        this.user.userName = name
-    }
-
-    changeSettingsGame = (roomId: string, roomLimit: number, gameDuration: number) => {
-        this.user.roomLimit = roomLimit
-        this.user.room = roomId
-        this.user.gameDuration = gameDuration
-    }
-
-    setUsers = (users: User[]) => {
-        this.users = users
-    }
-
-    setUrlGame = (joinUrl: string) => {
-        const params = joinUrl.split('/')
-        this.gameUrl = joinUrl
-        this.user.room = params[4]
-        this.user.gameDuration = +params[7]
-        this.user.roomLimit = +params[6]
+    exit = () => {
+        this.setName('')
+        sessionStorage.removeItem('gameUrl')
+        sessionStorage.removeItem('user')
     }
 }
 

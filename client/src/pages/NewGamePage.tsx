@@ -11,8 +11,7 @@ import {CreateGameForm} from 'components/GameDetails/CreateGameForm';
 
 export const NewGamePage = observer(() => {
 
-    const {setName, changeSettingsGame, user, setUrlGame, gameUrl} = appStore
-    console.log(appStore)
+    const {setName, changeSettingsGame, setUrlGame, user, gameUrl, exit} = appStore
     const roomId = uuid();
     const [joinUrl, setJoinUrl] = useState(gameUrl || '');
     const [nameUser, setNameUser] = useState(user.userName || '');
@@ -57,7 +56,6 @@ export const NewGamePage = observer(() => {
 
     const isName = () => {
         setName(nameUser)
-        sessionStorage.setItem('user', nameUser)
 
     };
     const startGame = () => {
@@ -73,8 +71,11 @@ export const NewGamePage = observer(() => {
     };
     return (
         <div className={styles.newGamePageWrapper}>
+            <button onClick={exit} className={styles.exitBtn}>
+                <span
+                    className={`font-effect-fire-animation ${styles.exitBtn_text}`}>Exit</span>
+            </button>
             <h1 className="font-effect-fire-animation">C L I C K E R</h1>
-
             {!!user.userName ? (
                 <div className={styles.inputsWrapper}>
                     <div className={styles.inputs}>
