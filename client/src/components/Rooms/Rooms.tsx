@@ -5,7 +5,7 @@ import {ListOfRooms} from './ListOfRooms';
 import {useLocation, useNavigate} from 'react-router-dom';
 import styles from '../../pages/styles.module.scss';
 import {SOCKET_URL, START_GAME_LABEL} from 'utils/variables';
-import {useGameDetails} from '../../hooks/useGameDetails';
+import {useGameDetails} from 'hooks/useGameDetails';
 
 let socket: Socket;
 

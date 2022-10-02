@@ -56,6 +56,6 @@ export type ListOfRoomsPropsT = {
     roomLimit: number
     users: ReactNode
     players: number
-    gameDuration: number | string
+    gameDuration: number
 }
 

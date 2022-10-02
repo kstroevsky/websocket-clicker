@@ -1,8 +1,8 @@
 export type User = {
-    gameDuration: string
+    gameDuration: number
     id: string
     room: string
-    roomLimit: string
+    roomLimit: number
     userName: string
 }
 
@@ -10,11 +10,11 @@ export type JoinToRoom = {
     roomId: string,
     roomLimit: number
     players: number
-    gameDuration: number | string
+    gameDuration: number
 }
 
 export type RoomT = {
-    gameDuration: string
+    gameDuration: number
     id: string
     room: string
     roomLimit: number

@@ -1,6 +1,8 @@
+import {observer} from "mobx-react-lite";
 import {useEffect, useState, useRef} from 'react';
 import {useParams} from 'react-router';
 import {useNavigate} from 'react-router-dom';
+import appStore from "stores/appStore";
 
 import {User} from "types/params";
 import styles from './styles.module.scss'
@@ -11,63 +13,60 @@ import {ClickCount} from 'components/GameDetails/ClickCount';
 import {DisplayTimer} from 'components/GameDetails/DisplayTimer';
 
 let socket: Socket;
-
-function GamePage() {
+const GamePage = observer(() => {
     const navigate = useNavigate();
-    const {roomId, userName, roomLimit, gameDuration} = useParams();
-    const [roomUsers, setRoomUsers] = useState<User[]>([]);
-    const [data, setData] = useState<{ userName: string, text: number }[]>([]);
-    const [gameStarted, setGameStarted] = useState(false);
-    const [timeLeft, setTimeLeft] = useState<number>(5);
-    const [gameTime, setGameTime] = useState<string | number>(gameDuration || 10);
-    const isTimeUp = timeLeft === 0;
 
+    const {setUsers, users, setGameState, gameIsStarted, user} = appStore
+    const {room: roomId, roomLimit, gameDuration, userName} = user
+    const [roomUsers, setRoomUsers] = useState<User[]>(users || []);
+    const [data, setData] = useState<{ userName: string, text: number }[]>([]);
+    const [timeLeft, setTimeLeft] = useState<number>(5);
+    const [gameTime, setGameTime] = useState<number>(Number(gameDuration) || 10);
+    const isTimeUp = timeLeft === 0;
     const gameTimeout = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if (roomLimit && +roomLimit === roomUsers.length) {
             const intervalId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
-
             return () => clearInterval(intervalId);
         }
     }, [roomUsers.length, roomLimit]);
 
     useEffect(() => {
-        if (!gameStarted && isTimeUp) setGameStarted(true);
-
-    }, [isTimeUp, gameStarted]);
+        if (!gameIsStarted && isTimeUp) setGameState(true);
+    }, [isTimeUp, gameIsStarted, setGameState]);
 
     useEffect(() => {
-        if (gameStarted) {
-            const intervalId = setInterval(() => setGameTime(prev => Number(prev) - 1), 1000);
+        if (gameIsStarted) {
+            const intervalId = setInterval(() => setGameTime((prev: number) => prev - 1), 1000);
             gameTimeout.current = setTimeout(() => {
-                setGameStarted(false);
+                setGameState(false);
                 clearInterval(intervalId);
             }, 1000 * Number(gameDuration));
         }
-    }, [gameStarted])
+    }, [gameIsStarted, gameDuration, setGameState])
 
     useEffect(() => {
         socket = io(SOCKET_URL, {transports: ['websocket']});
         const handler = (msg: { userName: string, text: number }) => {
-
             setData((prev) => [...prev, msg])
         };
         socket.on('message', handler);
         socket.emit('joinRoom', {roomId, userName, roomLimit, gameDuration});
         socket.on('roomUsers', ({room, users}: { room: string, users: User[] }) => {
+            setUsers(users)
             setRoomUsers(users);
         });
         return () => {
             socket.disconnect();
         };
-    }, [roomId, roomLimit, userName, gameDuration]);
+    }, [roomId, roomLimit, userName, gameDuration, setUsers]);
 
     const countHandler = (count: number) => {
         socket.emit('userMsg', count);
     };
     const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
-    const isStartedStyle = gameStarted
+    const isStartedStyle = gameIsStarted
         ? styles.startGame
         : styles.startGameHidden;
 
@@ -93,13 +92,13 @@ function GamePage() {
             <div>
                 <ClickCount
                     userName={userName}
-                    gameStarted={gameStarted}
+                    gameStarted={gameIsStarted}
                     countHandler={countHandler}
                 />
                 <DisplayTimer
                     roomUsers={roomUsers}
                     winner={winner}
-                    gameStarted={gameStarted}
+                    gameStarted={gameIsStarted}
                     timeLeft={timeLeft}
                     data={data}
                     gameTime={gameTime}
@@ -107,6 +106,6 @@ function GamePage() {
             </div>
         </div>
     );
-}
+})
 
 export default GamePage;

@@ -1,22 +1,31 @@
-import {ChangeEvent, useState} from 'react';
+import {observer} from "mobx-react-lite";
+import {ChangeEvent, useEffect, useState} from 'react';
+import appStore from "stores/appStore";
 import {v4 as uuid} from 'uuid';
 import {useNavigate} from 'react-router-dom';
 import styles from './styles.module.scss';
 import {START_GAME_LABEL} from 'utils/variables';
-import {useGameDetails} from '../hooks/useGameDetails';
+import {useGameDetails} from 'hooks/useGameDetails';
 import {AddForm} from 'components/GameDetails/AddForm';
 import {CreateGameForm} from 'components/GameDetails/CreateGameForm';
 
-function NewGamePage() {
-    const roomId = uuid();
-    const [user, setUser] = useState('');
-    const [joinUrl, setJoinUrl] = useState('');
-    const [roomLimit, setRoomLimit] = useState(0);
-    const [gameDuration, setGameDuration] = useState<number>(0);
-    const [nameEntered, setNameEntered] = useState(false);
+export const NewGamePage = observer(() => {
 
+    const {setName, changeSettingsGame, user, setUrlGame, gameUrl} = appStore
+    console.log(appStore)
+    const roomId = uuid();
+    const [joinUrl, setJoinUrl] = useState(gameUrl || '');
+    const [nameUser, setNameUser] = useState(user.userName || '');
+    const [roomLimit, setRoomLimit] = useState(user.roomLimit || 0);
+    const [gameDuration, setGameDuration] = useState(user.gameDuration || 0);
     const {createGame, joinGame} = useGameDetails();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const sessionUser = sessionStorage.getItem('user')
+        sessionUser && setName(sessionUser)
+        sessionUser && setNameUser(sessionUser)
+    }, [setName]);
 
     const onChangeRoomLimitHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = Number(e.currentTarget.value)
@@ -46,23 +55,27 @@ function NewGamePage() {
         }
     };
 
-    const isName = () => setNameEntered(prev => !prev);
+    const isName = () => {
+        setName(nameUser)
+        sessionStorage.setItem('user', nameUser)
+
+    };
     const startGame = () => {
-        createGame(roomId, user, roomLimit, gameDuration);
-        setUser('');
+        createGame(roomId, nameUser, roomLimit, gameDuration);
+        changeSettingsGame(roomId, roomLimit, gameDuration)
     };
     const joinToGame = () => {
-        joinGame(joinUrl, user);
-        setUser('');
+        setUrlGame(joinUrl)
+        joinGame(joinUrl, nameUser);
     };
     const openList = () => {
-        navigate('/rooms', {state: {name: user}});
+        navigate('/rooms', {state: {name: nameUser}});
     };
     return (
         <div className={styles.newGamePageWrapper}>
             <h1 className="font-effect-fire-animation">C L I C K E R</h1>
 
-            {nameEntered ? (
+            {!!user.userName ? (
                 <div className={styles.inputsWrapper}>
                     <div className={styles.inputs}>
                         <h3 className={styles.titleForInput}>CREATE THE GAME</h3>
@@ -72,7 +85,7 @@ function NewGamePage() {
                                 onChangeRoomLimit={onChangeRoomLimitHandler}
                                 valueGameDuration={gameDuration}
                                 onChangeGameDuration={onChangeGameDurationHandler}
-                                disabledBtn={!(user && roomLimit && gameDuration)}
+                                disabledBtn={!(nameUser && roomLimit && gameDuration)}
                                 clickHandler={startGame}
                                 titleBtn={START_GAME_LABEL}
                             />
@@ -92,7 +105,7 @@ function NewGamePage() {
                                 placeholder={'ADD HTTP'}
                                 value={joinUrl}
                                 type={'text'}
-                                disabledBtn={user === ''}
+                                disabledBtn={nameUser === ''}
                                 clickHandler={joinToGame}
                                 titleBtn={START_GAME_LABEL}
                             />
@@ -103,11 +116,11 @@ function NewGamePage() {
                 <>
                     <div className={styles.nameInput}>
                         <AddForm
-                            onChangeText={setUser}
+                            onChangeText={setNameUser}
                             placeholder={'Enter The name'}
-                            value={user}
+                            value={nameUser}
                             type={'text'}
-                            disabledBtn={user === ''}
+                            disabledBtn={!nameUser}
                             clickHandler={isName}
                             titleBtn={START_GAME_LABEL}
                         />
@@ -116,6 +129,5 @@ function NewGamePage() {
             )}
         </div>
     );
-}
+})
 
-export default NewGamePage;
