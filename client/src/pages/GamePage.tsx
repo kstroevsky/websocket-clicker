@@ -20,7 +20,8 @@ const GamePage = observer(() => {
         gameIsStarted,
         user,
         setUrlGame,
-        setName
+        setName,
+        getUrlGame
     } = appStore
     const {room: roomId, roomLimit, gameDuration, userName} = user
     const [roomUsers, setRoomUsers] = useState<User[]>(users || []);
@@ -31,10 +32,7 @@ const GamePage = observer(() => {
     const gameTimeout = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-        const gameUrl = sessionStorage.getItem('gameUrl')
-        const nameInStorage = sessionStorage.getItem('user')
-        nameInStorage && setName(nameInStorage)
-        !!gameUrl && setUrlGame(gameUrl)
+        getUrlGame()
     }, [setName, setUrlGame]);
 
     useEffect(() => {

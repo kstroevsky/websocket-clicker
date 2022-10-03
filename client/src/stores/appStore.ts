@@ -50,6 +50,13 @@ class AppStore {
         this.gameIsStarted = value
     }
 
+    getUrlGame = () => {
+        const gameUrl = sessionStorage.getItem('gameUrl')
+        const nameInStorage = sessionStorage.getItem('user')
+        !!nameInStorage && this.setName(nameInStorage)
+        !!gameUrl && this.setUrlGame(gameUrl)
+    }
+
     exit = () => {
         this.setName('')
         sessionStorage.removeItem('gameUrl')
