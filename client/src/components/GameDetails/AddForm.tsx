@@ -3,7 +3,6 @@ import {AddFormPropsT} from "types/components";
 import styles from './../../pages/styles.module.scss';
 
 export const AddForm: FC<AddFormPropsT> = props => {
-
     const {
         type,
         onChange,

@@ -2,9 +2,9 @@ import {observer} from "mobx-react-lite";
 import {useEffect, useState, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import appStore from "stores/appStore";
-import {User} from "types/params";
+import {IUser} from "types/params";
 import styles from './styles.module.scss'
-import {COPY_LABEL, GO_HOME_LABEL, SOCKET_URL} from 'utils/variables';
+import {COPY_LABEL, GO_HOME_LABEL, SOCKET_URL} from 'utils/constants';
 import {copy} from 'utils/utils';
 import {io, Socket} from 'socket.io-client';
 import {ClickCount} from 'components/GameDetails/ClickCount';
@@ -19,33 +19,29 @@ const GamePage = observer(() => {
         setGameState,
         gameIsStarted,
         user,
-        setUrlGame,
-        setName,
-        getUrlGame
+        getInfoGame
     } = appStore
-    const {room: roomId, roomLimit, gameDuration, userName} = user
-    const [roomUsers, setRoomUsers] = useState<User[]>(users || []);
+
+    const {roomId, roomLimit, gameDuration, userName} = user
+    const [roomUsers, setRoomUsers] = useState<IUser[]>(users || []);
     const [data, setData] = useState<{ userName: string, text: number }[]>([]);
     const [timeLeft, setTimeLeft] = useState<number>(5);
-    const [gameTime, setGameTime] = useState<number>(Number(gameDuration) || 10);
+    const [gameTime, setGameTime] = useState<number>(gameDuration || 10);
     const isTimeUp = timeLeft === 0;
     const gameTimeout = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-        getUrlGame()
-    }, [setName, setUrlGame]);
-
+        getInfoGame()
+    }, []);
     useEffect(() => {
         if (roomLimit && +roomLimit === roomUsers.length) {
             const intervalId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
             return () => clearInterval(intervalId);
         }
     }, [roomUsers.length, roomLimit]);
-
     useEffect(() => {
         if (!gameIsStarted && isTimeUp) setGameState(true);
     }, [isTimeUp, gameIsStarted]);
-
     useEffect(() => {
         if (gameIsStarted) {
             const intervalId = setInterval(() => setGameTime((prev: number) => prev - 1), 1000);
@@ -55,7 +51,6 @@ const GamePage = observer(() => {
             }, 1000 * Number(gameDuration));
         }
     }, [gameIsStarted])
-
     useEffect(() => {
         socket = io(SOCKET_URL, {transports: ['websocket']});
         const handler = (msg: { userName: string, text: number }) => {
@@ -63,7 +58,7 @@ const GamePage = observer(() => {
         };
         socket.on('message', handler);
         socket.emit('joinRoom', {roomId, userName, roomLimit, gameDuration});
-        socket.on('roomUsers', ({roomId, users}: { roomId: string, users: User[] }) => {
+        socket.on('roomUsers', ({roomId, users}: { roomId: string, users: IUser[] }) => {
             setUsers(users)
             setRoomUsers(users);
         });
@@ -71,8 +66,6 @@ const GamePage = observer(() => {
             socket.disconnect();
         };
     }, [roomId, roomLimit, userName, gameDuration]);
-
-
     const countHandler = (count: number) => {
         socket.emit('userMsg', count);
     };

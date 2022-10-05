@@ -1,4 +1,5 @@
 import React from 'react';
+import {FIRE_STYLE_CLASSNAME} from "utils/constants";
 
 const style = {
     backgroundColor: 'rgb(22, 22, 30)',
@@ -7,12 +8,13 @@ const style = {
     justifyContent: 'center',
     alignItems: 'center'
 }
+
 export const Error404 = () => {
     return (
         <div style={style}>
             <div>
-                <h1 className="font-effect-fire-animation">404</h1>
-                <h1 className="font-effect-fire-animation">Page Not Found</h1>
+                <h1 className={FIRE_STYLE_CLASSNAME}>404</h1>
+                <h1 className={FIRE_STYLE_CLASSNAME}>Page Not Found</h1>
             </div>
 
         </div>

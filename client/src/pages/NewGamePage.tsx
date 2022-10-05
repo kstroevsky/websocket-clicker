@@ -4,28 +4,33 @@ import appStore from "stores/appStore";
 import {v4 as uuid} from 'uuid';
 import {useNavigate} from 'react-router-dom';
 import styles from './styles.module.scss';
-import {START_GAME_LABEL} from 'utils/variables';
+import {FIRE_STYLE_CLASSNAME, START_GAME_LABEL} from 'utils/constants';
 import {useGameDetails} from 'hooks/useGameDetails';
 import {AddForm} from 'components/GameDetails/AddForm';
 import {CreateGameForm} from 'components/GameDetails/CreateGameForm';
 
 export const NewGamePage = observer(() => {
 
-    const {setName, changeSettingsGame, setUrlGame, user, gameUrl, exit} = appStore
+    const {
+        setName,
+        changeSettingsGame,
+        setUrlGame,
+        getInfoGame,
+        user,
+        gameUrl,
+        exit
+    } = appStore
     const roomId = uuid();
-    const [joinUrl, setJoinUrl] = useState(gameUrl || '');
-    const [nameUser, setNameUser] = useState(user.userName || '');
-    const [roomLimit, setRoomLimit] = useState(user.roomLimit || 0);
-    const [gameDuration, setGameDuration] = useState(user.gameDuration || 0);
+    const [joinUrl, setJoinUrl] = useState(gameUrl);
+    const [nameUser, setNameUser] = useState(user.userName);
+    const [roomLimit, setRoomLimit] = useState(user.roomLimit);
+    const [gameDuration, setGameDuration] = useState(user.gameDuration);
     const {createGame, joinGame} = useGameDetails();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const sessionUser = sessionStorage.getItem('user')
-        sessionUser && setName(sessionUser)
-        sessionUser && setNameUser(sessionUser)
-    }, [setName]);
-
+        getInfoGame()
+    }, [getInfoGame]);
     const onChangeRoomLimitHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = Number(e.currentTarget.value)
         switch (true) {
@@ -39,7 +44,6 @@ export const NewGamePage = observer(() => {
                 setRoomLimit(inputValue);
         }
     };
-
     const onChangeGameDurationHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = Number(e.currentTarget.value)
         switch (true) {
@@ -53,11 +57,7 @@ export const NewGamePage = observer(() => {
                 setGameDuration(inputValue);
         }
     };
-
-    const isName = () => {
-        setName(nameUser)
-
-    };
+    const saveName = () => setName(nameUser)
     const startGame = () => {
         changeSettingsGame(roomId, roomLimit, gameDuration)
         createGame(roomId, nameUser, roomLimit, gameDuration);
@@ -73,9 +73,9 @@ export const NewGamePage = observer(() => {
         <div className={styles.newGamePageWrapper}>
             {!!user.userName && < button onClick={exit} className={styles.exitBtn}>
                 <span
-                className={`font-effect-fire-animation ${styles.exitBtn_text}`}>Exit</span>
-                </button>}
-            <h1 className="font-effect-fire-animation">C L I C K E R</h1>
+                    className={`${FIRE_STYLE_CLASSNAME} ${styles.exitBtn_text}`}>Exit</span>
+            </button>}
+            <h1 className={FIRE_STYLE_CLASSNAME}>C L I C K E R</h1>
             {!!user.userName ? (
                 <div className={styles.inputsWrapper}>
                     <div className={styles.inputs}>
@@ -122,7 +122,7 @@ export const NewGamePage = observer(() => {
                             value={nameUser}
                             type={'text'}
                             disabledBtn={!nameUser}
-                            clickHandler={isName}
+                            clickHandler={saveName}
                             titleBtn={START_GAME_LABEL}
                         />
                     </div>

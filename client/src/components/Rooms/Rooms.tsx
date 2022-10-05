@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {io, Socket} from 'socket.io-client';
-import {JoinToRoom, RoomsT} from "types/params";
+import {IJoinToRoom, IRooms} from "types/params";
 import {ListOfRooms} from './ListOfRooms';
 import {useLocation, useNavigate} from 'react-router-dom';
 import styles from '../../pages/styles.module.scss';
-import {SOCKET_URL, START_GAME_LABEL} from 'utils/variables';
+import {SOCKET_URL, START_GAME_LABEL} from 'utils/constants';
 import {useGameDetails} from 'hooks/useGameDetails';
 
 let socket: Socket;
 
 export const Rooms = () => {
     const navigate = useNavigate();
-    const [rooms, setRooms] = useState<RoomsT>({});
+    const [rooms, setRooms] = useState<IRooms>({});
     const location = useLocation();
     const {createGame} = useGameDetails();
     useEffect(() => {
@@ -30,7 +30,7 @@ export const Rooms = () => {
                             roomLimit,
                             players,
                             gameDuration
-                        }: JoinToRoom) => (roomLimit >
+                        }: IJoinToRoom) => (roomLimit >
         players) && createGame(roomId, location.state.name, roomLimit, gameDuration);
     return (
         <div className={styles.newGamePageWrapper}>
