@@ -3,7 +3,6 @@ import {AddFormPropsT} from "types/components";
 import styles from './../../pages/styles.module.scss';
 
 export const AddForm: FC<AddFormPropsT> = props => {
-
     const {
         type,
         onChange,
@@ -13,6 +12,7 @@ export const AddForm: FC<AddFormPropsT> = props => {
         disabledBtn,
         titleBtn,
         clickHandler,
+        value,
         ...restProps
     } = props
     const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +29,7 @@ export const AddForm: FC<AddFormPropsT> = props => {
             <input
                 type={type}
                 onChange={onChangeCallback}
+                value={value}
                 onKeyPress={onKeyPressCallback}
                 {...restProps}
             />

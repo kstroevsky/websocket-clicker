@@ -1,25 +1,26 @@
-export type User = {
-    gameDuration: string
+export interface IUser {
+    gameDuration: number
     id: string
-    room: string
-    roomLimit: string
+    roomId: string
+    roomLimit: number
     userName: string
 }
 
-export type JoinToRoom = {
+export interface IJoinToRoom {
     roomId: string,
     roomLimit: number
     players: number
-    gameDuration: number | string
+    gameDuration: number
 }
 
-export type RoomT = {
-    gameDuration: string
+export interface IRoom {
+    gameDuration: number
     id: string
     room: string
     roomLimit: number
     userName: string
 }
-export type RoomsT = {
-    [key:string]: RoomT[]
+
+export interface IRooms {
+    [key: string]: IRoom[]
 }

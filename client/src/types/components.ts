@@ -1,15 +1,14 @@
 import React, {ChangeEvent, ReactNode} from "react";
-import {JoinToRoom, User} from "types/params";
+import {IJoinToRoom, IUser} from "types/params";
 
 export type DisplayTimerPropsT = {
-    roomUsers: User[]
+    roomUsers: IUser[]
     data: { userName: string, text: number }[]
     timeLeft: number
     gameStarted: boolean
     winner: string
     gameTime: string | number
 }
-
 export type CreateGameFormPropsT = {
     onChangeRoomLimit: (e: ChangeEvent<HTMLInputElement>) => void
     valueRoomLimit: number
@@ -19,7 +18,6 @@ export type CreateGameFormPropsT = {
     titleBtn: JSX.Element
     clickHandler: () => void
 }
-
 export type AddFormPropsT = {
     onChangeText: (value: string) => void
     placeholder: string
@@ -32,30 +30,26 @@ export type AddFormPropsT = {
     onKeyPress?: (value: React.KeyboardEvent<HTMLInputElement>) => void
     onEnter?: () => void
 }
-
 export type ClickCountPropsT = {
     countHandler: (count: number) => void
     gameStarted: boolean
     userName: string | undefined
 }
-
 export type OpponentCounterPropsT = {
-    i: User
+    i: IUser
     data: { userName: string, text: number }[]
 }
-
 export type OpponentCirclePropsT = {
     count: number
     userName: string
 }
-
 export type ListOfRoomsPropsT = {
     index: number
     roomId: string
-    joinToRoom: ({roomId, roomLimit, players, gameDuration}: JoinToRoom) => void
+    joinToRoom: ({roomId, roomLimit, players, gameDuration}: IJoinToRoom) => void
     roomLimit: number
     users: ReactNode
     players: number
-    gameDuration: number | string
+    gameDuration: number
 }
 
