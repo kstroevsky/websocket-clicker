@@ -2,8 +2,7 @@
  ## About
  It is a web application based on [React](https://github.com/facebook/react) and bootstrapped with [Create React App](https://github.com/facebook/create-react-app). This project provide multiplayer ability to a simply Clicker (Counter) functionality with WebSockets API provided as [Socket.IO](https://github.com/socketio/socket.io) library.
  You can create user, game (with room limit and duration) and join the game by another user (i.e. by another browser).
- ## Goals
- - add store (Mobx) to memorizing user and game params and reduce params from URL **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/8)**
+ ## Current goals
  - add style switching **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/9)**
  - add more tests  **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/11)**
  - try to move the project from socket.io to WebSocket API **(issue https://github.com/kstroevsky/hivex-websocket-clicker/issues/15)**
