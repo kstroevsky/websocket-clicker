@@ -34,6 +34,8 @@ export type ClickCountPropsT = {
     countHandler: (count: number) => void
     gameStarted: boolean
     userName: string | undefined
+    isOnSuperClick: boolean
+    handlerSuperClick: () => void
 }
 export type OpponentCounterPropsT = {
     i: IUser
