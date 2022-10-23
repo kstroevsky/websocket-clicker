@@ -27,13 +27,20 @@ const GamePage = observer(() => {
     const [data, setData] = useState<{ userName: string, text: number }[]>([]);
     const [timeLeft, setTimeLeft] = useState<number>(5);
     const [gameTime, setGameTime] = useState<number>(gameDuration || 10);
-    const [modeSuperClick, setModeSuperClick] = useState<boolean>(false);
     
     const isTimeUp = timeLeft === 0;
     const gameTimeout = useRef<NodeJS.Timeout | null>(null);
 
+    const games: string[] = ['regularGame', 'superGame'];
+    const [typeGame, setTypeGame] = useState('');
+    const [superPlayer, setSuperPlayer] = useState('');
+    const [superMoment, setSuperMoment] = useState(0);
+    let diffStart = 3
+    let diffEnd = 3
+    
     useEffect(() => {
         getInfoGame()
+        setTypeGame(games[Math.floor(Math.random()*games.length)])
     }, []);
     
     useEffect(() => {
@@ -49,7 +56,11 @@ const GamePage = observer(() => {
     
     useEffect(() => {
         if (gameIsStarted) {
-            Math.random() < 0.5 ? setModeSuperClick(false) : setModeSuperClick(true)
+            if (typeGame == 'superGame') {
+                setSuperPlayer(users[Math.floor(Math.random()*users.length)].userName)
+                let moments: number[] = Array.apply(0, Array(gameDuration - diffStart - diffEnd)).map((_, index) => index + diffStart + 1);
+                setSuperMoment(moments[Math.floor(Math.random()*moments.length)])
+            }
             const intervalId = setInterval(() => setGameTime((prev: number) => prev - 1), 1000);
             gameTimeout.current = setTimeout(() => {
                 setGameState(false);
@@ -67,8 +78,7 @@ const GamePage = observer(() => {
         socket.emit('joinRoom', {roomId, userName, roomLimit, gameDuration});
         socket.on('roomUsers', ({roomId, users}: { roomId: string, users: IUser[] }) => {
             setUsers(users)
-            setRoomUsers(users);
-            
+            setRoomUsers(users);                      
         });
         return () => {
             socket.disconnect();
@@ -76,18 +86,13 @@ const GamePage = observer(() => {
     }, [roomId, roomLimit, userName, gameDuration]);
 
     const countHandler = (count: number) => {
+        console.log('count', count)
         socket.emit('userMsg', count);
-    };
-
-    const handlerSuperClick = () => {
-        setModeSuperClick(false)
-    }
+    };    
 
     const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
-    
-    const isStartedStyle = gameIsStarted
-        ? styles.startGame
-        : styles.startGameHidden;
+        
+    const isStartedStyle = styles[gameIsStarted ? 'startGame' : 'startGameHidden']
 
     return (
         <div className={styles.gameWrapper}>
@@ -113,8 +118,8 @@ const GamePage = observer(() => {
                     userName={userName}
                     gameStarted={gameIsStarted}
                     countHandler={countHandler}
-                    isOnSuperClick={modeSuperClick}
-                    handlerSuperClick={handlerSuperClick}
+                    superPlayer={superPlayer}
+                    superMoment={superMoment}
                 />
                 <DisplayTimer
                     roomUsers={roomUsers}

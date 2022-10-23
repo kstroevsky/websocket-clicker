@@ -15,9 +15,7 @@ export const OpponentCircle: FC<OpponentCirclePropsT> = ({count, userName}) => {
 
     const addActiveClass = () => {
         setActive(true);
-        // console.log('hello', count, active);
         setTimeout(() => setActive(false), 50);
-        // console.log('hello', count, active);
     };
 
     useEffect(() => {
