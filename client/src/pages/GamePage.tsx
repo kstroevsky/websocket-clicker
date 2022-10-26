@@ -27,23 +27,40 @@ const GamePage = observer(() => {
     const [data, setData] = useState<{ userName: string, text: number }[]>([]);
     const [timeLeft, setTimeLeft] = useState<number>(5);
     const [gameTime, setGameTime] = useState<number>(gameDuration || 10);
+    
     const isTimeUp = timeLeft === 0;
     const gameTimeout = useRef<NodeJS.Timeout | null>(null);
 
+    const games: string[] = ['regularGame', 'superGame'];
+    const [typeGame, setTypeGame] = useState('');
+    const [superPlayer, setSuperPlayer] = useState('');
+    const [superMoment, setSuperMoment] = useState(0);
+    let diffStart = 3
+    let diffEnd = 3
+    
     useEffect(() => {
         getInfoGame()
+        setTypeGame(games[Math.floor(Math.random()*games.length)])
     }, []);
+    
     useEffect(() => {
         if (roomLimit && +roomLimit === roomUsers.length) {
             const intervalId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
             return () => clearInterval(intervalId);
         }
     }, [roomUsers.length, roomLimit]);
+    
     useEffect(() => {
         if (!gameIsStarted && isTimeUp) setGameState(true);
     }, [isTimeUp, gameIsStarted]);
+    
     useEffect(() => {
         if (gameIsStarted) {
+            if (typeGame == 'superGame') {
+                setSuperPlayer(users[Math.floor(Math.random()*users.length)].userName)
+                let moments: number[] = Array.apply(0, Array(gameDuration - diffStart - diffEnd)).map((_, index) => index + diffStart + 1);
+                setSuperMoment(moments[Math.floor(Math.random()*moments.length)])
+            }
             const intervalId = setInterval(() => setGameTime((prev: number) => prev - 1), 1000);
             gameTimeout.current = setTimeout(() => {
                 setGameState(false);
@@ -51,6 +68,7 @@ const GamePage = observer(() => {
             }, 1000 * Number(gameDuration));
         }
     }, [gameIsStarted])
+
     useEffect(() => {
         socket = io(SOCKET_URL, {transports: ['websocket']});
         const handler = (msg: { userName: string, text: number }) => {
@@ -60,19 +78,21 @@ const GamePage = observer(() => {
         socket.emit('joinRoom', {roomId, userName, roomLimit, gameDuration});
         socket.on('roomUsers', ({roomId, users}: { roomId: string, users: IUser[] }) => {
             setUsers(users)
-            setRoomUsers(users);
+            setRoomUsers(users);                      
         });
         return () => {
             socket.disconnect();
         };
     }, [roomId, roomLimit, userName, gameDuration]);
+
     const countHandler = (count: number) => {
+        console.log('count', count)
         socket.emit('userMsg', count);
-    };
+    };    
+
     const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
-    const isStartedStyle = gameIsStarted
-        ? styles.startGame
-        : styles.startGameHidden;
+        
+    const isStartedStyle = styles[gameIsStarted ? 'startGame' : 'startGameHidden']
 
     return (
         <div className={styles.gameWrapper}>
@@ -98,6 +118,8 @@ const GamePage = observer(() => {
                     userName={userName}
                     gameStarted={gameIsStarted}
                     countHandler={countHandler}
+                    superPlayer={superPlayer}
+                    superMoment={superMoment}
                 />
                 <DisplayTimer
                     roomUsers={roomUsers}

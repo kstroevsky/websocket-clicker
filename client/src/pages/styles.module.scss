@@ -26,6 +26,20 @@
   margin: 30px;
 }
 
+.addSuperClickButton {
+  z-index: 2;
+  color: white;
+  border: none;
+  padding: 20px;
+  background-color: #1ade0c;
+  border-radius: 100px;
+  height: 150px;
+  width: 150px;
+  cursor: pointer;
+  animation: neon4 10s ease-in-out infinite alternate;
+  margin: 30px;
+}
+
 .playerInfo {
   display: flex;
   flex-direction: column;
@@ -105,6 +119,18 @@ p {
   to {
     box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ffdd1b,
     0 0 35px #ffdd1b, 0 0 40px #ffdd1b, 0 0 50px #ffdd1b, 0 0 75px #ffdd1b;
+  }
+}
+
+@keyframes neon4 {
+  from {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #1ade0c,
+    0 0 70px #1ade0c, 0 0 80px #1ade0c, 0 0 100px #1ade0c, 0 0 150px #1ade0c;
+  }
+
+  to {
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #1ade0c,
+    0 0 35px #1ade0c, 0 0 40px #1ade0c, 0 0 50px #1ade0c, 0 0 75px #1ade0c;
   }
 }
 

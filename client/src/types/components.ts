@@ -33,7 +33,9 @@ export type AddFormPropsT = {
 export type ClickCountPropsT = {
     countHandler: (count: number) => void
     gameStarted: boolean
-    userName: string | undefined
+    userName: string | undefined    
+    superPlayer: string | undefined
+    superMoment: number
 }
 export type OpponentCounterPropsT = {
     i: IUser
