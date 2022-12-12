@@ -9,6 +9,8 @@ import {copy} from 'utils/utils';
 import {io, Socket} from 'socket.io-client';
 import {ClickCount} from 'components/GameDetails/ClickCount';
 import {DisplayTimer} from 'components/GameDetails/DisplayTimer';
+import {Button} from "../components/Button";
+import {PageWrapper} from "../components/PageWrapper";
 
 let socket: Socket;
 const GamePage = observer(() => {
@@ -95,22 +97,20 @@ const GamePage = observer(() => {
     const isStartedStyle = styles[gameIsStarted ? 'startGame' : 'startGameHidden']
 
     return (
-        <div className={styles.gameWrapper}>
+        <PageWrapper>
             <div style={{display: 'flex'}}>
-                <button
+                <Button
                     title="COPY"
-                    className={styles.buttonEnterName}
                     onClick={() => copy()}
                 >
                     {COPY_LABEL}
-                </button>
-                <button
+                </Button>
+                <Button
                     title="GO HOME"
-                    className={styles.buttonEnterName}
                     onClick={() => navigate('/')}
                 >
                     {GO_HOME_LABEL}
-                </button>
+                </Button>
             </div>
             <div className={isStartedStyle}>GO</div>
             <div>
@@ -130,7 +130,7 @@ const GamePage = observer(() => {
                     gameTime={gameTime}
                 />
             </div>
-        </div>
+        </PageWrapper>
     );
 })
 

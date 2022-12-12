@@ -1,6 +1,7 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {FC} from 'react';
 import {CreateGameFormPropsT} from "types/components";
-import styles from './../../pages/styles.module.scss';
+import {Button} from "../Button";
+import classes from './styles/index.module.scss';
 
 export const CreateGameForm:FC<CreateGameFormPropsT> = ({
   onChangeRoomLimit,
@@ -12,7 +13,7 @@ export const CreateGameForm:FC<CreateGameFormPropsT> = ({
   clickHandler,
 }) => {
   return (
-    <>
+    <div className={classes.inputWrapper}>
       <input
         type="number"
         min={2}
@@ -20,6 +21,7 @@ export const CreateGameForm:FC<CreateGameFormPropsT> = ({
         value={valueRoomLimit}
         onChange={onChangeRoomLimit}
         placeholder="Number of players"
+        className={classes.inputNumber}
       />
       <input
         type="number"
@@ -28,14 +30,14 @@ export const CreateGameForm:FC<CreateGameFormPropsT> = ({
         value={valueGameDuration}
         onChange={onChangeGameDuration}
         placeholder="Game Duration"
+        className={classes.inputNumber}
       />
-      <button
-        className={styles.buttonEnterName}
-        disabled={disabledBtn}
+      <Button
+        isDisabled={disabledBtn}
         onClick={() => clickHandler()}
       >
         {titleBtn}
-      </button>
-    </>
+      </Button>
+    </div>
   );
 };

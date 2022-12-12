@@ -1,0 +1,1 @@
+export {BurningHeadline} from './BurningHeadline'

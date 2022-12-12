@@ -6,6 +6,8 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import styles from '../../pages/styles.module.scss';
 import {SOCKET_URL, START_GAME_LABEL} from 'utils/constants';
 import {useGameDetails} from 'hooks/useGameDetails';
+import {PageWrapper} from "../PageWrapper";
+import {Button} from "../Button";
 
 let socket: Socket;
 
@@ -33,13 +35,13 @@ export const Rooms = () => {
                         }: IJoinToRoom) => (roomLimit >
         players) && createGame(roomId, location.state.name, roomLimit, gameDuration);
     return (
-        <div className={styles.newGamePageWrapper}>
+        <PageWrapper>
             <h3 className={styles.titleForInput}>
                 {`${location.state.name}, Chose a game or press button to create new game`}
             </h3>
-            <button className={styles.buttonEnterName} onClick={() => navigate('/')}>
+            <Button onClick={() => navigate('/')}>
                 {START_GAME_LABEL}
-            </button>
+            </Button>
             <div style={{display: 'flex'}}>
                 {!!rooms &&
                     Object.keys(rooms).map((key, index) => (
@@ -61,6 +63,6 @@ export const Rooms = () => {
                         </div>
                     ))}
             </div>
-        </div>
+        </PageWrapper>
     );
 };

@@ -1,17 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Anton&effect=fire-animation);
 
-.gameWrapper {
-  padding: 0 20px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  background: rgb(22, 22, 30);
-  min-height: 100vh;
-  height: 100%;
-  align-items: stretch;
-  justify-content: center;
-}
-
 .addButton {
   z-index: 2;
   color: white;
@@ -75,41 +63,6 @@ p {
   position: relative;
 }
 
-.nameInput {
-  display: flex;
-  padding: 20px;
-  justify-content: center;
-}
-
-.gameCreateInput {
-  display: flex;
-  padding: 20px;
-  justify-content: center;
-}
-
-.gameCreateInput input {
-  padding: 20px;
-  border-radius: 10px;
-  width: 125px;
-  outline: none;
-  border: none;
-  background-color: antiquewhite;
-  animation: neon3 1.5s ease-in-out infinite alternate;
-
-  &:first-of-type {
-    margin-right: 30px;
-  }
-}
-
-.nameInput input {
-  padding: 20px;
-  border-radius: 10px;
-  outline: none;
-  border: none;
-  background-color: antiquewhite;
-  animation: neon3 1.5s ease-in-out infinite alternate;
-}
-
 @keyframes neon3 {
   from {
     box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ffdd1b,
@@ -132,14 +85,6 @@ p {
     box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #1ade0c,
     0 0 35px #1ade0c, 0 0 40px #1ade0c, 0 0 50px #1ade0c, 0 0 75px #1ade0c;
   }
-}
-
-.inputsWrapper {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .timeLeft {
@@ -190,54 +135,6 @@ h1 {
   text-align: center;
 }
 
-.buttonEnterName {
-  margin: 20px;
-  border: none;
-  cursor: pointer;
-  position: relative;
-  width: 60px;
-  height: 60px;
-  text-align: center;
-  background: #fff;
-  border-radius: 50%;
-  color: #666;
-  font-size: 36px;
-  transition: 0.5s;
-  animation: neon3 1.5s ease-in-out infinite alternate;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: #ffdd1b;
-    transition: 0.5s;
-    transform: scale(0.9);
-    z-index: -1;
-  }
-
-  &:hover:before {
-    transform: scale(1.2);
-    box-shadow: 0 0 15px #ffdd1b;
-    filter: blur(3px);
-  }
-
-  &:hover:after {
-    transform: scale(1.2);
-    box-shadow: 0 0 15px #ffdd1b;
-    filter: blur(3px);
-  }
-
-  &:hover {
-    color: #ffdd1b;
-    box-shadow: 0 0 15px #ffdd1b;
-    text-shadow: 0 0 15px #ffdd1b;
-  }
-}
-
 li {
   color: #fff;
   font-size: 18px;
@@ -249,6 +146,7 @@ li {
   justify-content: center;
   align-items: center;
   min-width: 400px;
+  gap: 15px;
 }
 
 .titleForInput {
@@ -256,6 +154,7 @@ li {
   color: #fff;
   font-size: 28px;
   text-transform: uppercase;
+  margin: 0;
 }
 
 .roomWrapper {

@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FC} from 'react';
 import {AddFormPropsT} from "types/components";
-import styles from './../../pages/styles.module.scss';
+import classes from './styles/index.module.scss';
+import {Button} from "../Button";
 
 export const AddForm: FC<AddFormPropsT> = props => {
     const {
@@ -25,7 +26,7 @@ export const AddForm: FC<AddFormPropsT> = props => {
         onEnter && e.key === 'Enter' && onEnter();
     };
     return (
-        <>
+        <div className={classes.inputWrapper}>
             <input
                 type={type}
                 onChange={onChangeCallback}
@@ -33,13 +34,12 @@ export const AddForm: FC<AddFormPropsT> = props => {
                 onKeyPress={onKeyPressCallback}
                 {...restProps}
             />
-            <button
-                className={styles.buttonEnterName}
-                disabled={disabledBtn}
+            <Button
+                isDisabled={disabledBtn}
                 onClick={() => clickHandler()}
             >
                 {titleBtn}
-            </button>
-        </>
+            </Button>
+        </div>
     );
 };

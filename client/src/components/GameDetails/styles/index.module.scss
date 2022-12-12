@@ -1,0 +1,26 @@
+.inputWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.inputWrapper input {
+  font-size: 16px;
+  padding: 20px;
+  border-radius: 10px;
+  outline: none;
+  background-color: antiquewhite;
+  animation: neon3 1.5s ease-in-out infinite alternate;
+  border: 4px var(--main-color) solid;
+  color: var(--main-color-dark);
+  transition: .3s;
+
+  &:focus{
+    border: 4px var(--main-color-dark) solid;
+  }
+}
+
+.inputNumber{
+  text-align: center;
+  width: 20px;
+}
