@@ -1,9 +1,11 @@
+@import "../../../styles/const";
+
 .newGamePageWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: var(--background-dark);
+  background: $background-dark;
   min-height: 100vh;
   padding: 30px;
   position: relative;

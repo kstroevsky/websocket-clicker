@@ -1,11 +1,13 @@
 @import url(https://fonts.googleapis.com/css?family=Anton&effect=fire-animation);
+@import "../styles/const";
 
 .addButton {
   z-index: 2;
-  color: white;
-  border: none;
+  font-size: 22px;
+  color: $main-color-dark;
+  border: unset;
   padding: 20px;
-  background-color: #ffd194;
+  background-color: $main-color-light;
   border-radius: 100px;
   height: 150px;
   width: 150px;
@@ -16,10 +18,10 @@
 
 .addSuperClickButton {
   z-index: 2;
-  color: white;
+  color: $white;
   border: none;
   padding: 20px;
-  background-color: #1ade0c;
+  background-color: $success;
   border-radius: 100px;
   height: 150px;
   width: 150px;
@@ -30,6 +32,7 @@
 
 .playerInfo {
   display: flex;
+  gap: 20px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -38,11 +41,13 @@
 .userName {
   font-size: 18px;
   text-transform: uppercase;
+  color: $white;
 }
 
 .oponentsWrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 20px;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -65,25 +70,23 @@ p {
 
 @keyframes neon3 {
   from {
-    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ffdd1b,
-    0 0 70px #ffdd1b, 0 0 80px #ffdd1b, 0 0 100px #ffdd1b, 0 0 150px #ffdd1b;
+    box-shadow: 0 0 30px #fff, 0 0 40px #ffdd1b;
   }
 
   to {
     box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ffdd1b,
-    0 0 35px #ffdd1b, 0 0 40px #ffdd1b, 0 0 50px #ffdd1b, 0 0 75px #ffdd1b;
+    0 0 35px #ffdd1b, 0 0 40px #ffdd1b;
   }
 }
 
 @keyframes neon4 {
   from {
-    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #1ade0c,
-    0 0 70px #1ade0c, 0 0 80px #1ade0c, 0 0 100px #1ade0c, 0 0 150px #1ade0c;
+    box-shadow: 0 0 30px #fff, 0 0 40px $success;
   }
 
   to {
-    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #1ade0c,
-    0 0 35px #1ade0c, 0 0 40px #1ade0c, 0 0 50px #1ade0c, 0 0 75px #1ade0c;
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px $success,
+    0 0 35px $success, 0 0 40px $success;
   }
 }
 
@@ -91,12 +94,14 @@ p {
   font-size: 48px;
   text-align: center;
   padding: 20px;
+  color: $white;
 }
 
 .winnerTitle {
   text-align: center;
   padding: 20px;
   font-size: 48px;
+  color: $white;
 }
 
 .startGame {

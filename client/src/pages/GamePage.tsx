@@ -93,12 +93,10 @@ const GamePage = observer(() => {
     };    
 
     const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
-        
-    const isStartedStyle = styles[gameIsStarted ? 'startGame' : 'startGameHidden']
 
     return (
         <PageWrapper>
-            <div style={{display: 'flex'}}>
+            <div style={{display: 'flex', gap: '20px'}}>
                 <Button
                     title="COPY"
                     onClick={() => copy()}
@@ -112,8 +110,10 @@ const GamePage = observer(() => {
                     {GO_HOME_LABEL}
                 </Button>
             </div>
-            <div className={isStartedStyle}>GO</div>
-            <div>
+            {gameIsStarted && (
+                <div className={styles.startGame}>GO</div>
+            )}
+            <div style={{display: 'flex', gap: '40px', flexDirection: 'column'}}>
                 <ClickCount
                     userName={userName}
                     gameStarted={gameIsStarted}

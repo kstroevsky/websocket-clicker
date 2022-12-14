@@ -35,29 +35,26 @@ export const NewGamePage = observer(() => {
         getInfoGame();
     }, [getInfoGame]);
     const onChangeRoomLimitHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = Number(e.currentTarget.value)
+        const inputValue = e.currentTarget.value;
         switch (true) {
-            case inputValue < 2:
+            case +inputValue < 2 && inputValue !== '':
                 setRoomLimit(2);
                 break;
-            case inputValue > 5:
+            case +inputValue > 5:
                 setRoomLimit(5);
                 break;
             default:
-                setRoomLimit(inputValue);
+                setRoomLimit(inputValue as unknown as number);
         }
     };
     const onChangeGameDurationHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = Number(e.currentTarget.value)
+        const inputValue = e.currentTarget.value;
         switch (true) {
-            case inputValue < 10:
-                setGameDuration(10);
-                break;
-            case inputValue > 60:
+            case +inputValue > 60:
                 setGameDuration(60);
                 break;
             default:
-                setGameDuration(inputValue);
+                setGameDuration(inputValue as unknown as number);
         }
     };
     const saveName = () => setName(nameUser)
@@ -109,7 +106,7 @@ export const NewGamePage = observer(() => {
                             placeholder={'ADD HTTP'}
                             value={joinUrl}
                             type={'text'}
-                            disabledBtn={nameUser === ''}
+                            disabledBtn={nameUser === '' || joinUrl === ''}
                             clickHandler={joinToGame}
                             titleBtn={START_GAME_LABEL}
                         />

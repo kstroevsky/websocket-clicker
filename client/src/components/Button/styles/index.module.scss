@@ -1,5 +1,7 @@
+@import "../../../styles/const";
+
 .buttonEnterName {
-  color: var(--main-color);
+  color: $main-color;
   border: none;
   cursor: pointer;
   position: relative;
@@ -41,5 +43,16 @@
   &:hover {
     box-shadow: 0 0 15px #ffdd1b;
     text-shadow: 0 0 15px #ffdd1b;
+  }
+
+  &:disabled{
+    background: $disabled;
+    cursor: default;
+    color: $disabled-dark;
+
+    &:hover{
+      box-shadow: unset;
+      text-shadow: unset;
+    }
   }
 }
