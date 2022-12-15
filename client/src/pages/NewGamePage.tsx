@@ -8,7 +8,6 @@ import {START_GAME_LABEL} from 'utils/constants';
 import {useGameDetails} from 'hooks/useGameDetails';
 import {AddForm} from 'components/GameDetails/AddForm';
 import {CreateGameForm} from 'components/GameDetails/CreateGameForm';
-import {BurningHeadline} from "../components/BurningHeadline";
 import {PageWrapper} from "../components/PageWrapper";
 import {Button} from "../components/Button";
 import {GroupBox} from "../components/GroupBox";
@@ -21,7 +20,6 @@ export const NewGamePage = observer(() => {
         getInfoGame,
         user,
         gameUrl,
-        exit,
     } = appStore;
     const roomId = uuid();
     const [joinUrl, setJoinUrl] = useState(gameUrl);
@@ -71,20 +69,6 @@ export const NewGamePage = observer(() => {
     };
     return (
         <PageWrapper>
-            {!!user.userName && (
-                <button onClick={exit} className={styles.exitBtn}>
-                    <BurningHeadline
-                        title={"Exit"}
-                        className={styles.exitBtn_text}
-                    />
-                </button>
-            )}
-            <BurningHeadline
-                title={"Clicker"}
-                tagName={"h1"}
-                style={{letterSpacing: '30px'}}
-                isUpperCase
-            />
             {!!user.userName ? (
                 <GroupBox>
                     <div className={styles.inputs}>

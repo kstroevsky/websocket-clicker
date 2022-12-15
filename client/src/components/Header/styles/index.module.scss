@@ -1,0 +1,25 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  @media (max-width: 570px) {
+    flex-direction: column;
+  }
+}
+
+.hidden{
+  visibility: hidden;
+  @media (max-width: 570px) {
+    display: none;
+  }
+}
+
+.exitBtn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+}

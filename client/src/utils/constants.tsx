@@ -1,5 +1,9 @@
-export const GO_HOME_LABEL = <>&#8962;</>;
-export const COPY_LABEL = <>&#9711;</>;
-export const START_GAME_LABEL = <>&#9876;</>;
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-regular-svg-icons';
+import { faHouse, faPlay } from '@fortawesome/free-solid-svg-icons';
+
+export const GO_HOME_LABEL = <FontAwesomeIcon icon={faHouse}/>;
+export const COPY_LABEL = <FontAwesomeIcon icon={faCopy}/>;
+export const START_GAME_LABEL = <FontAwesomeIcon icon={faPlay}/>;
 export const SOCKET_URL = 'http://localhost:4000';
 export const FIRE_STYLE_CLASSNAME = 'font-effect-fire-animation'

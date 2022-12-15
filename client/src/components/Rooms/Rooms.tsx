@@ -8,10 +8,12 @@ import {SOCKET_URL, START_GAME_LABEL} from 'utils/constants';
 import {useGameDetails} from 'hooks/useGameDetails';
 import {PageWrapper} from "../PageWrapper";
 import {Button} from "../Button";
+import appStore from "../../stores/appStore";
 
 let socket: Socket;
 
 export const Rooms = () => {
+    const {changeSettingsGame} = appStore;
     const navigate = useNavigate();
     const [rooms, setRooms] = useState<IRooms>({});
     const location = useLocation();
@@ -27,13 +29,6 @@ export const Rooms = () => {
         };
     }, []);
 
-    const joinToRoom = ({
-                            roomId,
-                            roomLimit,
-                            players,
-                            gameDuration
-                        }: IJoinToRoom) => (roomLimit >
-        players) && createGame(roomId, location.state.name, roomLimit, gameDuration);
     return (
         <PageWrapper>
             <h3 className={styles.titleForInput}>
@@ -44,24 +39,34 @@ export const Rooms = () => {
             </Button>
             <div style={{display: 'flex'}}>
                 {!!rooms &&
-                    Object.keys(rooms).map((key, index) => (
-                        <div key={index}>
-                            <ListOfRooms
-                                index={index}
-                                players={rooms[key].length}
-                                key={index}
-                                joinToRoom={joinToRoom}
-                                roomId={key}
-                                gameDuration={rooms[key][0].gameDuration}
-                                roomLimit={rooms[key][0].roomLimit}
-                                users={rooms[key].map((room) => (
-                                    <ul key={room.id}>
-                                        <li>{room.userName}</li>
-                                    </ul>
-                                ))}
-                            />
-                        </div>
-                    ))}
+                    Object.keys(rooms).map((key, index) => {
+                        const joinToRoom = (
+                            {roomId, roomLimit, players, gameDuration}: IJoinToRoom
+                        ) => {
+                            if(roomLimit > players) {
+                                createGame(roomId, rooms[key][0].userName, roomLimit, gameDuration);
+                                changeSettingsGame(roomId, roomLimit, gameDuration)
+                            }
+                        };
+                        return (
+                            <div key={index}>
+                                <ListOfRooms
+                                    index={index}
+                                    players={rooms[key].length}
+                                    key={index}
+                                    joinToRoom={joinToRoom}
+                                    roomId={key}
+                                    gameDuration={rooms[key][0].gameDuration}
+                                    roomLimit={rooms[key][0].roomLimit}
+                                    users={rooms[key].map((room) => (
+                                        <ul key={room.id}>
+                                            <li>{room.userName}</li>
+                                        </ul>
+                                    ))}
+                                />
+                            </div>
+                        )}
+                    )}
             </div>
         </PageWrapper>
     );

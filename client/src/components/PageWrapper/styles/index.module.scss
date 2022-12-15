@@ -1,13 +1,18 @@
 @import "../../../styles/const";
 
 .newGamePageWrapper {
+  background: $background-dark;
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.contentWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: $background-dark;
-  min-height: 100vh;
   padding: 30px;
-  position: relative;
-  box-sizing: border-box;
+  flex-grow: 3;
 }

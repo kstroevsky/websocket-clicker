@@ -2,11 +2,12 @@
 
 .box{
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
   background: $main-color-light;
   border-radius: 30px;
   gap: 40px;
-  padding: 20px 0;
+  padding: 50px 20px;
+  max-width: 900px;
 }

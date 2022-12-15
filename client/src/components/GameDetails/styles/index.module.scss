@@ -26,6 +26,16 @@
   color: $background-dark;
   transition: .3s;
 
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+
   &:focus{
     border: 4px $background-dark solid;
   }

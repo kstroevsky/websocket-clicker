@@ -150,7 +150,6 @@ li {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-width: 400px;
   gap: 15px;
 }
 
@@ -197,17 +196,6 @@ li {
   background: none;
   border: none;
   outline: none;
-
-  &_text {
-    background: none;
-    font-size: 22px;
-
-    &:hover {
-      background-color: rgba(246, 181, 42, 0.1);
-      transition: .1s ease-in-out;
-      box-shadow: 0 0 30px rgba(246, 181, 42, 0.75);
-    }
-  }
 
   @media (max-width: 768px) {
     position: absolute;

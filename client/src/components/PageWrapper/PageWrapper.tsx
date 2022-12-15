@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import classes from './styles/index.module.scss';
+import {Header} from "../Header";
 
 type PageWrapperType = {
     children: React.ReactNode;
@@ -10,7 +11,10 @@ export const PageWrapper: FC<PageWrapperType> = (
 ) => {
     return (
         <div className={classes.newGamePageWrapper}>
-            {children}
+            <Header/>
+            <div className={classes.contentWrapper}>
+                {children}
+            </div>
         </div>
     );
 }
