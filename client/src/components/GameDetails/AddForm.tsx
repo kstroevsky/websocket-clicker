@@ -36,7 +36,7 @@ export const AddForm: FC<AddFormPropsT> = props => {
             />
             <Button
                 isDisabled={disabledBtn}
-                onClick={() => clickHandler()}
+                onClick={clickHandler}
             >
                 {titleBtn}
             </Button>

@@ -11,6 +11,7 @@ import {ClickCount} from 'components/GameDetails/ClickCount';
 import {DisplayTimer} from 'components/GameDetails/DisplayTimer';
 import {Button} from "../components/Button";
 import {PageWrapper} from "../components/PageWrapper";
+import {ButtonTitle} from "../components/Button/const";
 
 let socket: Socket;
 const GamePage = observer(() => {
@@ -98,13 +99,13 @@ const GamePage = observer(() => {
         <PageWrapper>
             <div style={{display: 'flex', gap: '20px'}}>
                 <Button
-                    title="COPY"
-                    onClick={() => copy()}
+                    title={ButtonTitle.Copy}
+                    onClick={copy}
                 >
                     {COPY_LABEL}
                 </Button>
                 <Button
-                    title="GO HOME"
+                    title={ButtonTitle.GoHome}
                     onClick={() => navigate('/')}
                 >
                     {GO_HOME_LABEL}

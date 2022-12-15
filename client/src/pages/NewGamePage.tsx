@@ -106,7 +106,7 @@ export const NewGamePage = observer(() => {
                             placeholder={'ADD HTTP'}
                             value={joinUrl}
                             type={'text'}
-                            disabledBtn={nameUser === '' || joinUrl === ''}
+                            disabledBtn={!(nameUser && joinUrl)}
                             clickHandler={joinToGame}
                             titleBtn={START_GAME_LABEL}
                         />

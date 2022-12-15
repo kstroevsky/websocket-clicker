@@ -2,6 +2,8 @@ import React, {FC} from 'react';
 import {CreateGameFormPropsT} from "types/components";
 import {Button} from "../Button";
 import classes from './styles/index.module.scss';
+import {CreateGameFormPlaceholders} from "./const";
+import {ButtonTitle} from "../Button/const";
 
 export const CreateGameForm:FC<CreateGameFormPropsT> = ({
   onChangeRoomLimit,
@@ -22,7 +24,7 @@ export const CreateGameForm:FC<CreateGameFormPropsT> = ({
                 max={5}
                 value={valueRoomLimit}
                 onChange={onChangeRoomLimit}
-                placeholder="Number of players"
+                placeholder={CreateGameFormPlaceholders.NumberOfPlayers}
                 className={classes.inputNumber}
             />
         </div>
@@ -34,14 +36,14 @@ export const CreateGameForm:FC<CreateGameFormPropsT> = ({
                 max={60}
                 value={valueGameDuration}
                 onChange={onChangeGameDuration}
-                placeholder="Game Duration"
+                placeholder={CreateGameFormPlaceholders.GameDuration}
                 className={classes.inputNumber}
             />
         </div>
       <Button
         isDisabled={disabledBtn}
-        onClick={() => clickHandler()}
-        title="Create"
+        onClick={clickHandler}
+        title={ButtonTitle.Create}
       >
         {titleBtn}
       </Button>

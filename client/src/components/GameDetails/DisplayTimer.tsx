@@ -16,7 +16,7 @@ export const DisplayTimer: FC<DisplayTimerPropsT> = (props) => {
                 {timeLeft > 0 ? timeLeft : gameTime > 0 ? gameTime : 'Game Over'}
             </div>
             <div className={styles.winnerTitle}>
-                {gameStarted ? winner && `Current Leader is ${winner}` : gameTime === 0 && !gameStarted && `Player ${winner} WIN`}
+                {winner && (gameStarted ? `Current Leader is ${winner}` : gameTime === 0 && `Player ${winner} WIN`)}
             </div>
         </>
     );
