@@ -1,19 +1,18 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import classes from './styles/index.module.scss';
-import {BurningHeadline} from "../BurningHeadline";
+import { BurningHeadline } from "../BurningHeadline";
 import appStore from "../../stores/appStore";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Header: FC = () => {
-    const {
-        user,
-        exit,
-    } = appStore;
+    const { user, exit } = appStore;
     const navigate = useNavigate();
+
     const handleExit = () => {
         exit();
         navigate('/');
     }
+
     return (
         <div className={classes.headerContainer}>
             {!!user.userName && (
@@ -26,7 +25,7 @@ export const Header: FC = () => {
             <BurningHeadline
                 title={"Clicker"}
                 tagName={"h1"}
-                style={{letterSpacing: '30px'}}
+                style={{ letterSpacing: '30px' }}
                 isUpperCase
             />
             {!!user.userName && (

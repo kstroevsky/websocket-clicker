@@ -10,16 +10,15 @@ type ButtonType = {
     title?: string
 }
 
-export const Button: FC<ButtonType> = (
-    {
-        children,
-        className,
-        onClick,
-        isDisabled,
-        title,
-    }
-) => {
-    const buttonClasses = classNames(classes.buttonEnterName, className)
+export const Button: FC<ButtonType> = ({
+    children,
+    className,
+    onClick,
+    isDisabled,
+    title,
+}) => {
+    const buttonClasses = classNames(classes.buttonEnterName, className);
+
     return (
         <button
             className={buttonClasses}
