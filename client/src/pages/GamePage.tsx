@@ -9,6 +9,9 @@ import {copy} from 'utils/utils';
 import {io, Socket} from 'socket.io-client';
 import {ClickCount} from 'components/GameDetails/ClickCount';
 import {DisplayTimer} from 'components/GameDetails/DisplayTimer';
+import {Button} from "../components/Button";
+import {PageWrapper} from "../components/PageWrapper";
+import {ButtonTitle} from "../components/Button/const";
 
 let socket: Socket;
 const GamePage = observer(() => {
@@ -91,29 +94,27 @@ const GamePage = observer(() => {
     };    
 
     const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
-        
-    const isStartedStyle = styles[gameIsStarted ? 'startGame' : 'startGameHidden']
 
     return (
-        <div className={styles.gameWrapper}>
-            <div style={{display: 'flex'}}>
-                <button
-                    title="COPY"
-                    className={styles.buttonEnterName}
-                    onClick={() => copy()}
+        <PageWrapper>
+            <div style={{display: 'flex', gap: '20px'}}>
+                <Button
+                    title={ButtonTitle.Copy}
+                    onClick={copy}
                 >
                     {COPY_LABEL}
-                </button>
-                <button
-                    title="GO HOME"
-                    className={styles.buttonEnterName}
+                </Button>
+                <Button
+                    title={ButtonTitle.GoHome}
                     onClick={() => navigate('/')}
                 >
                     {GO_HOME_LABEL}
-                </button>
+                </Button>
             </div>
-            <div className={isStartedStyle}>GO</div>
-            <div>
+            {gameIsStarted && (
+                <div className={styles.startGame}>GO</div>
+            )}
+            <div style={{display: 'flex', gap: '40px', flexDirection: 'column'}}>
                 <ClickCount
                     userName={userName}
                     gameStarted={gameIsStarted}
@@ -130,7 +131,7 @@ const GamePage = observer(() => {
                     gameTime={gameTime}
                 />
             </div>
-        </div>
+        </PageWrapper>
     );
 })
 

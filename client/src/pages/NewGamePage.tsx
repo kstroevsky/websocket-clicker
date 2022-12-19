@@ -4,13 +4,15 @@ import appStore from "stores/appStore";
 import {v4 as uuid} from 'uuid';
 import {useNavigate} from 'react-router-dom';
 import styles from './styles.module.scss';
-import {FIRE_STYLE_CLASSNAME, START_GAME_LABEL} from 'utils/constants';
+import {START_GAME_LABEL} from 'utils/constants';
 import {useGameDetails} from 'hooks/useGameDetails';
 import {AddForm} from 'components/GameDetails/AddForm';
 import {CreateGameForm} from 'components/GameDetails/CreateGameForm';
+import {PageWrapper} from "../components/PageWrapper";
+import {Button} from "../components/Button";
+import {GroupBox} from "../components/GroupBox";
 
 export const NewGamePage = observer(() => {
-
     const {
         setName,
         changeSettingsGame,
@@ -18,8 +20,7 @@ export const NewGamePage = observer(() => {
         getInfoGame,
         user,
         gameUrl,
-        exit
-    } = appStore
+    } = appStore;
     const roomId = uuid();
     const [joinUrl, setJoinUrl] = useState(gameUrl);
     const [nameUser, setNameUser] = useState(user.userName);
@@ -29,32 +30,29 @@ export const NewGamePage = observer(() => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getInfoGame()
+        getInfoGame();
     }, [getInfoGame]);
     const onChangeRoomLimitHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = Number(e.currentTarget.value)
+        const inputValue = e.currentTarget.value;
         switch (true) {
-            case inputValue < 2:
+            case +inputValue < 2 && inputValue !== '':
                 setRoomLimit(2);
                 break;
-            case inputValue > 5:
+            case +inputValue > 5:
                 setRoomLimit(5);
                 break;
             default:
-                setRoomLimit(inputValue);
+                setRoomLimit(inputValue as unknown as number);
         }
     };
     const onChangeGameDurationHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = Number(e.currentTarget.value)
+        const inputValue = e.currentTarget.value;
         switch (true) {
-            case inputValue < 10:
-                setGameDuration(10);
-                break;
-            case inputValue > 60:
+            case +inputValue > 60:
                 setGameDuration(60);
                 break;
             default:
-                setGameDuration(inputValue);
+                setGameDuration(inputValue as unknown as number);
         }
     };
     const saveName = () => setName(nameUser)
@@ -70,65 +68,52 @@ export const NewGamePage = observer(() => {
         navigate('/rooms', {state: {name: nameUser}});
     };
     return (
-        <div className={styles.newGamePageWrapper}>
-            {!!user.userName && < button onClick={exit} className={styles.exitBtn}>
-                <span
-                    className={`${FIRE_STYLE_CLASSNAME} ${styles.exitBtn_text}`}>Exit</span>
-            </button>}
-            <h1 className={FIRE_STYLE_CLASSNAME}>C L I C K E R</h1>
+        <PageWrapper>
             {!!user.userName ? (
-                <div className={styles.inputsWrapper}>
+                <GroupBox>
                     <div className={styles.inputs}>
                         <h3 className={styles.titleForInput}>CREATE THE GAME</h3>
-                        <div className={styles.gameCreateInput}>
-                            <CreateGameForm
-                                valueRoomLimit={roomLimit}
-                                onChangeRoomLimit={onChangeRoomLimitHandler}
-                                valueGameDuration={gameDuration}
-                                onChangeGameDuration={onChangeGameDurationHandler}
-                                disabledBtn={!(nameUser && roomLimit && gameDuration)}
-                                clickHandler={startGame}
-                                titleBtn={START_GAME_LABEL}
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.inputs}>
-                        <h3 className={styles.titleForInput}>List of active games</h3>
-                        <button onClick={openList} className={styles.buttonEnterName}>
-                            {START_GAME_LABEL}
-                        </button>
-                    </div>
-                    <div className={styles.inputs}>
-                        <h3 className={styles.titleForInput}>JOIN THE GAME</h3>
-                        <div className={styles.nameInput}>
-                            <AddForm
-                                onChangeText={setJoinUrl}
-                                placeholder={'ADD HTTP'}
-                                value={joinUrl}
-                                type={'text'}
-                                disabledBtn={nameUser === ''}
-                                clickHandler={joinToGame}
-                                titleBtn={START_GAME_LABEL}
-                            />
-                        </div>
-                    </div>
-                </div>
-            ) : (
-                <>
-                    <div className={styles.nameInput}>
-                        <AddForm
-                            onChangeText={setNameUser}
-                            placeholder={'Enter The name'}
-                            value={nameUser}
-                            type={'text'}
-                            disabledBtn={!nameUser}
-                            clickHandler={saveName}
+                        <CreateGameForm
+                            valueRoomLimit={roomLimit}
+                            onChangeRoomLimit={onChangeRoomLimitHandler}
+                            valueGameDuration={gameDuration}
+                            onChangeGameDuration={onChangeGameDurationHandler}
+                            disabledBtn={!(nameUser && roomLimit && gameDuration)}
+                            clickHandler={startGame}
                             titleBtn={START_GAME_LABEL}
                         />
                     </div>
-                </>
+                    <div className={styles.inputs}>
+                        <h3 className={styles.titleForInput}>JOIN THE GAME</h3>
+                        <AddForm
+                            onChangeText={setJoinUrl}
+                            placeholder={'ADD HTTP'}
+                            value={joinUrl}
+                            type={'text'}
+                            disabledBtn={!(nameUser && joinUrl)}
+                            clickHandler={joinToGame}
+                            titleBtn={START_GAME_LABEL}
+                        />
+                    </div>
+                    <div className={styles.inputs}>
+                        <h3 className={styles.titleForInput}>List of active games</h3>
+                        <Button onClick={openList}>
+                            {START_GAME_LABEL}
+                        </Button>
+                    </div>
+                </GroupBox>
+            ) : (
+                <AddForm
+                    onChangeText={setNameUser}
+                    placeholder={'Enter your name'}
+                    value={nameUser}
+                    type={'text'}
+                    disabledBtn={!nameUser}
+                    clickHandler={saveName}
+                    titleBtn={START_GAME_LABEL}
+                />
             )}
-        </div>
+        </PageWrapper>
     );
 })
 

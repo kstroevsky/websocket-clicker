@@ -1,0 +1,47 @@
+@import "../../../styles/const";
+
+.inputWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.inputWrapper label{
+  width: 200px;
+  display: inline-block;
+  color: white;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.inputWrapper input {
+  font-size: 16px;
+  padding: 20px;
+  border-radius: 10px;
+  outline: none;
+  background-color: antiquewhite;
+  animation: neon3 1.5s ease-in-out infinite alternate;
+  border: 4px $main-color solid;
+  color: $background-dark;
+  transition: .3s;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  &:focus{
+    border: 4px $background-dark solid;
+  }
+}
+
+.inputNumber{
+  text-align: center;
+  width: 20px;
+}
