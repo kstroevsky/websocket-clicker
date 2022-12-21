@@ -4,28 +4,62 @@ import { TextInput } from "../components/TextInput";
 import randomWords from "random-words";
 import classes from './keyboard.module.scss';
 import { Button } from "../components/Button";
-import { START_GAME_LABEL } from "../utils/constants";
+import { COPY_LABEL, GO_HOME_LABEL } from "../utils/constants";
 import { useTimer } from "../components/Timer/hooks/useTimer";
 import { Timer } from "../components/Timer";
 import { observer } from "mobx-react-lite";
+import { useWebsocket } from "./hooks/useWebsocket";
+import appStore from "../stores/appStore";
+import { DisplayTimer } from "../components/GameDetails/DisplayTimer";
+import { ButtonTitle } from "../components/Button/const";
+import { copy } from "../utils/utils";
+import { useNavigate } from "react-router-dom";
 
 export const Keyboard: FC = observer(() => {
-    const {startTimer, leftTime, isTimerFinished, isTimerStarted, finishTimer} = useTimer({ ms: 5000});
+    const {
+        data,
+        roomUsers,
+        gameTime,
+        socket,
+    } = useWebsocket(appStore);
+    const { roomLimit } = appStore.user;
+    const { startTimer, leftTime, isTimerFinished, isTimerStarted } = useTimer({ ms: gameTime * 1000 });
+    const {
+        startTimer: startPreTimer,
+        leftTime: leftPreTime,
+        isTimerFinished: isPreTimerFinished,
+        isTimerStarted: isPreTimerStarted,
+    } = useTimer({ ms: 5000 });
+
     const [text, setText] = useState('');
+    const [countOfWords, setCountOfWords] = useState(0);
     const [textPart, setTextPart] = useState({
         written: '',
         toWrite: text,
     });
 
+    const navigate = useNavigate();
     const buttonRef = useRef<HTMLButtonElement>(null);
     const textInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        setText(randomWords({ exactly: 1, join: ' ' }));
+        if(roomLimit && +roomLimit === roomUsers.length) {
+            startPreTimer();
+        }
+    }, [roomUsers.length, roomLimit]);
+
+    useEffect(() => {
+        if(leftPreTime === 0) {
+            startTimer();
+        }
+    }, [leftPreTime]);
+
+    useEffect(() => {
+        setNewWord();
         if(isTimerStarted) {
             textInputRef.current?.focus();
         }
-        if(isTimerFinished){
+        if(isTimerFinished) {
             buttonRef.current?.focus();
         }
     }, [isTimerStarted]);
@@ -39,22 +73,45 @@ export const Keyboard: FC = observer(() => {
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const value = event.currentTarget.value;
-        if(!text.indexOf(value) && value.length - textPart.written.length === 1){
+        if(!text.indexOf(value) && value.length - textPart.written.length === 1) {
             setTextPart({
                 written: value,
                 toWrite: text.slice(value.length),
             })
         }
-        if(value === text){
-            finishTimer();
+        if(value === text) {
+            addWordInScore();
+            setNewWord();
         }
     }
-    const newGameHandler = () => {
-        startTimer();
+
+    const setNewWord = () => {
+        setText(randomWords({ exactly: 1, join: ' ' }));
     }
+
+    const addWordInScore = () => {
+        socket.emit('userMsg', countOfWords + 1);
+        setCountOfWords(prevState => prevState + 1);
+    };
+
+    const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
 
     return (
         <PageWrapper>
+            <div className={classes.textScreen}>
+                <Button
+                    title={ButtonTitle.Copy}
+                    onClick={copy}
+                >
+                    {COPY_LABEL}
+                </Button>
+                <Button
+                    title={ButtonTitle.GoHome}
+                    onClick={() => navigate('/')}
+                >
+                    {GO_HOME_LABEL}
+                </Button>
+            </div>
             <TextInput
                 value={textPart.written}
                 onChange={handleChange}
@@ -67,24 +124,17 @@ export const Keyboard: FC = observer(() => {
                     <span>{textPart.toWrite}</span>
                 </div>
             )}
-            {!isTimerFinished && (
-                <Timer time={leftTime}/>
+            {isPreTimerStarted && !isPreTimerFinished && (
+                <Timer time={leftPreTime} label='Game starts in'/>
             )}
-            {!isTimerStarted && !isTimerFinished && (
-                <div className={classes.finishScreen}>
-                    <Button onClick={newGameHandler} title={'New game'} ref={buttonRef}>
-                        {START_GAME_LABEL}
-                    </Button>
-                </div>
-            )}
-            {isTimerFinished && (
-                <div className={classes.finishScreen}>
-                    <h1>Game over</h1>
-                    <Button onClick={newGameHandler} title={'New game'} ref={buttonRef}>
-                        {START_GAME_LABEL}
-                    </Button>
-                </div>
-            )}
+            <DisplayTimer
+                roomUsers={roomUsers}
+                winner={winner}
+                gameStarted={isTimerStarted}
+                timeLeft={leftTime / 1000}
+                data={data}
+                gameTime={leftTime}
+            />
         </PageWrapper>
     );
 });
