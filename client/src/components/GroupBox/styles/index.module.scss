@@ -3,11 +3,11 @@
 .box{
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  background: $main-color-light;
+  align-items: center;
+  background: rgb(238, 184, 130);
   border-radius: 30px;
   gap: 40px;
   padding: 50px 20px;
   max-width: 900px;
+  flex-direction: column;
 }

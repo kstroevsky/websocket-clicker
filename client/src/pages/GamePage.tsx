@@ -96,7 +96,7 @@ const GamePage = observer(() => {
     const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
 
     return (
-        <PageWrapper>
+        <PageWrapper center>
             <div style={{display: 'flex', gap: '20px'}}>
                 <Button
                     title={ButtonTitle.Copy}

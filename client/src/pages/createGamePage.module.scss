@@ -1,0 +1,11 @@
+.flexBox{
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  gap: 30px;
+}
+@media (max-width: 685px) {
+  .flexBox {
+    flex-direction: column;
+  }
+}

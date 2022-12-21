@@ -23,7 +23,7 @@ export const Header: FC = () => {
                 </button>
             )}
             <BurningHeadline
-                title={"Clicker"}
+                title={"C-games"}
                 tagName={"h1"}
                 style={{ letterSpacing: '30px' }}
                 isUpperCase

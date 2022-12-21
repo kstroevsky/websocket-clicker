@@ -22,7 +22,6 @@ export type AddFormPropsT = {
     onChangeText: (value: string) => void
     placeholder: string
     value: string
-    type: string
     disabledBtn: boolean
     clickHandler: () => void
     titleBtn: JSX.Element

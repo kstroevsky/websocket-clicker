@@ -1,0 +1,29 @@
+@import "../../../styles/const";
+
+.container {
+  width: 100%;
+
+}
+
+.control {
+  background: antiquewhite !important;
+  border: 4px $main-color solid !important;
+  color: $background-dark !important;
+  border-radius: 10px !important;
+  outline: none !important;
+}
+
+.menu {
+  background: antiquewhite !important;
+}
+
+.option {
+  &:hover {
+    background: $main-color-light !important;
+    color: $white !important;
+  }
+
+  &_selected {
+    background: $main-color-dark !important;
+  }
+}

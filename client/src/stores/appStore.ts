@@ -20,9 +20,10 @@ class AppStore {
         this.users = users
         users.map(u => u.userName === this.user.userName ? this.user.id = u.id : null)
     }
-    changeSettingsGame = (roomId: string, roomLimit: number, gameDuration: number) => {
-        this.user = {...this.user, roomId, roomLimit, gameDuration}
-        this.setUrlGame(`http://localhost:3000/game/${roomId}/${this.user.userName}/${roomLimit}/${gameDuration}`)
+    changeSettingsGame = (roomId: string, roomLimit: number, gameDuration: number, game?: string) => {
+        console.log(game)
+        this.user = {...this.user, roomId, roomLimit, gameDuration,}
+        this.setUrlGame(`http://localhost:3000/${game ?? 'clicker'}/${roomId}/${this.user.userName}/${roomLimit}/${gameDuration}`)
     }
     setUrlGame = (joinUrl: string) => {
         this.gameUrl = joinUrl
