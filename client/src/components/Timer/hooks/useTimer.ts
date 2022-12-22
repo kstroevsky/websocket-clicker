@@ -13,6 +13,7 @@ export const useTimer = ({
     const [isTimerFinished, setIsTimerFinished] = useState(false);
     const [timer, setTimer] = useState<NodeJS.Timeout>();
     const [leftTime, setLeftTime] = useState(ms);
+    const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
 
     useEffect(() => {
         if(isTimerStarted) {
@@ -29,11 +30,16 @@ export const useTimer = ({
 
     useEffect(() => {
         if(isTimerStarted) {
-            setTimeout(() => {
-                setLeftTime(prev => prev - step >= 0 ? prev - step : 0)
-            }, step);
+            setIntervalId(
+                setInterval(() => {
+                    setLeftTime(prev => prev - step >= 0 ? prev - step : 0);
+                    if(leftTime === 0){
+                        clearInterval(intervalId);
+                    }
+                }, step)
+            );
         }
-    }, [leftTime, isTimerStarted]);
+    }, [isTimerStarted]);
 
     const startTimer = () => {
         setLeftTime(ms);
