@@ -7,7 +7,7 @@ type useTimerType = {
 
 export const useTimer = ({
     ms,
-    step = 1000
+    step = 1000,
 }: useTimerType) => {
     const [isTimerStarted, setIsTimerStarted] = useState(false);
     const [isTimerFinished, setIsTimerFinished] = useState(false);
@@ -30,12 +30,7 @@ export const useTimer = ({
     useEffect(() => {
         if(isTimerStarted) {
             setTimeout(() => {
-                if(leftTime - step >= 0){
-                    setLeftTime(prevState => prevState - step);
-                }
-                else {
-                    setLeftTime(0);
-                }
+                setLeftTime(prev => prev - step >= 0 ? prev - step : 0)
             }, step);
         }
     }, [leftTime, isTimerStarted]);

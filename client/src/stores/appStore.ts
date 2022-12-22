@@ -1,8 +1,9 @@
 import { makeAutoObservable } from "mobx";
 import { IUser } from "types/params";
+import { Game } from "../types/gameTypes";
 
 class AppStore {
-    user: IUser = { gameDuration: 0, id: '', roomId: '', roomLimit: 0, userName: '' }
+    user: IUser = { gameDuration: 0, id: '', roomId: '', roomLimit: 0, userName: '', game: Game.Clicker }
     gameUrl: string = ''
     users: IUser[] = []
     gameIsStarted: boolean = false
@@ -20,10 +21,9 @@ class AppStore {
         users.map(u => u.userName === this.user.userName ? this.user.id = u.id : null)
     }
     changeSettingsGame = (roomId: string, roomLimit: number, gameDuration: number, game?: string) => {
-        console.log(game)
-        this.user = { ...this.user, roomId, roomLimit, gameDuration };
+        this.user = { ...this.user, roomId, roomLimit, gameDuration, game: game ?? Game.Clicker };
         this.setUsers([]);
-        this.setUrlGame(`http://localhost:3000/${game ?? 'clicker'}/${roomId}/${this.user.userName}/${roomLimit}/${gameDuration}`)
+        this.setUrlGame(`http://localhost:3000/${game ?? Game.Clicker}/${roomId}/${this.user.userName}/${roomLimit}/${gameDuration}`)
     }
     setUrlGame = (joinUrl: string) => {
         this.gameUrl = joinUrl
@@ -31,6 +31,7 @@ class AppStore {
         const params = joinUrl.split('/')
         this.user = {
             ...this.user,
+            game: params[3],
             roomId: params[4],
             roomLimit: +params[6],
             gameDuration: +params[7],

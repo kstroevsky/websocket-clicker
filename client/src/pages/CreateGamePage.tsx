@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from 'react'
+import React, { ChangeEvent, FC, useCallback, useState } from 'react'
 import { observer } from "mobx-react-lite";
 import { PageWrapper } from "../components/PageWrapper";
 import { GroupBox } from "../components/GroupBox";
@@ -15,10 +15,11 @@ import { Dropdown } from "../components/Dropdown";
 import classes from './createGamePage.module.scss';
 import { AddForm } from "../components/GameDetails/AddForm";
 import { useNavigate } from "react-router-dom";
+import { Game } from "../types/gameTypes";
 
 const options = [
-    { value: 'clicker', label: 'Clicker' },
-    { value: 'keyboard', label: 'Keyboard'},
+    { value: Game.Clicker, label: 'Clicker' },
+    { value: Game.Keyboard, label: 'Keyboard' },
 ];
 
 type Option = {
@@ -43,28 +44,26 @@ export const CreateGamePage: FC = observer(() => {
     const { createGame, joinGame } = useGameDetails();
     const navigate = useNavigate();
 
-    const onChangeRoomLimitHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.currentTarget.value;
-        switch(true) {
-            case +inputValue < 2 && inputValue !== '':
-                setRoomLimit(2);
-                break;
-            case +inputValue > 5:
-                setRoomLimit(5);
-                break;
-            default:
-                setRoomLimit(inputValue as unknown as number);
-        }
-    };
+    const onChangeRoomLimitHandler = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const inputValue = e.currentTarget.value;
+            switch(true) {
+                case +inputValue < 2 && inputValue !== '':
+                    setRoomLimit(2);
+                    break;
+                case +inputValue > 5:
+                    setRoomLimit(5);
+                    break;
+                default:
+                    setRoomLimit(inputValue as unknown as number);
+            }
+        },
+        [setRoomLimit],
+    );
+
     const onChangeGameDurationHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.currentTarget.value;
-        switch(true) {
-            case +inputValue > 60:
-                setGameDuration(60);
-                break;
-            default:
-                setGameDuration(inputValue as unknown as number);
-        }
+        const inputValue = e.currentTarget.value || 0;
+        setGameDuration(+inputValue > 60 ? 60 : inputValue as unknown as number)
     };
 
     const onSelectChange = (option: Option | null) => {
@@ -81,7 +80,7 @@ export const CreateGamePage: FC = observer(() => {
     };
 
     const openList = () => {
-        navigate('/rooms', {state: {name: nameUser}});
+        navigate('/rooms', { state: { name: nameUser } });
     };
 
     const saveName = () => setName(nameUser);

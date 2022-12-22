@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SOCKET_URL } from "../../utils/constants";
 import { IUser } from "../../types/params";
-import {io, Socket} from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import AppStore from "../../stores/appStore";
 
 let socket: Socket;
@@ -12,9 +12,9 @@ export const useWebsocket = (appStore: typeof AppStore) => {
         setGameState,
         gameIsStarted,
         user,
-        getInfoGame
+        getInfoGame,
     } = appStore;
-    const {roomId, roomLimit, gameDuration, userName} = user;
+    const { roomId, roomLimit, gameDuration, userName, game } = user;
 
     const [data, setData] = useState<{ userName: string, text: number }[]>([]);
     const [roomUsers, setRoomUsers] = useState<IUser[]>(users || []);
@@ -31,16 +31,15 @@ export const useWebsocket = (appStore: typeof AppStore) => {
 
     useEffect(() => {
         getInfoGame()
-        setTypeGame(games[Math.floor(Math.random()*games.length)])
+        setTypeGame(games[Math.floor(Math.random() * games.length)])
     }, []);
 
     useEffect(() => {
-        if (gameIsStarted) {
-            if (typeGame === 'superGame') {
-                console.log(users)
-                setSuperPlayer(users[Math.floor(Math.random()*users.length)]?.userName)
+        if(gameIsStarted) {
+            if(typeGame === 'superGame') {
+                setSuperPlayer(users[Math.floor(Math.random() * users.length)]?.userName)
                 let moments: number[] = Array.apply(0, Array(gameDuration - diffStart - diffEnd)).map((_, index) => index + diffStart + 1);
-                setSuperMoment(moments[Math.floor(Math.random()*moments.length)])
+                setSuperMoment(moments[Math.floor(Math.random() * moments.length)])
             }
             const intervalId = setInterval(() => setGameTime((prev: number) => prev - 1), 1000);
             gameTimeout.current = setTimeout(() => {
@@ -51,13 +50,13 @@ export const useWebsocket = (appStore: typeof AppStore) => {
     }, [gameIsStarted]);
 
     useEffect(() => {
-        socket = io(SOCKET_URL, {transports: ['websocket']});
+        socket = io(SOCKET_URL, { transports: ['websocket'] });
         const handler = (msg: { userName: string, text: number }) => {
             setData((prev) => [...prev, msg])
         };
         socket.on('message', handler);
-        socket.emit('joinRoom', {roomId, userName, roomLimit, gameDuration});
-        socket.on('roomUsers', ({roomId, users}: { roomId: string, users: IUser[] }) => {
+        socket.emit('joinRoom', { roomId, userName, roomLimit, gameDuration, game });
+        socket.on('roomUsers', ({ users }: { roomId: string, users: IUser[] }) => {
             setRoomUsers(users);
         });
         return () => {
@@ -71,6 +70,6 @@ export const useWebsocket = (appStore: typeof AppStore) => {
         superPlayer,
         superMoment,
         gameTime,
-        socket
+        socket,
     }
 }

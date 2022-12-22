@@ -43,25 +43,17 @@ export const Keyboard: FC = observer(() => {
     const textInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if(roomLimit && +roomLimit === roomUsers.length) {
-            startPreTimer();
-        }
+        roomLimit && +roomLimit === roomUsers.length && startPreTimer();
     }, [roomUsers.length, roomLimit]);
 
     useEffect(() => {
-        if(leftPreTime === 0) {
-            startTimer();
-        }
+        leftPreTime === 0 && startTimer();
     }, [leftPreTime]);
 
     useEffect(() => {
         setNewWord();
-        if(isTimerStarted) {
-            textInputRef.current?.focus();
-        }
-        if(isTimerFinished) {
-            buttonRef.current?.focus();
-        }
+        isTimerFinished && textInputRef.current?.focus();
+        isTimerFinished && buttonRef.current?.focus();
     }, [isTimerStarted]);
 
     useEffect(() => {
@@ -125,7 +117,7 @@ export const Keyboard: FC = observer(() => {
                 </div>
             )}
             {isPreTimerStarted && !isPreTimerFinished && (
-                <Timer time={leftPreTime} label='Game starts in'/>
+                <Timer time={leftPreTime} label="Game starts in"/>
             )}
             <DisplayTimer
                 roomUsers={roomUsers}

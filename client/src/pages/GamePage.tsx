@@ -1,15 +1,15 @@
-import {observer} from "mobx-react-lite";
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { observer } from "mobx-react-lite";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import appStore from "stores/appStore";
 import styles from './styles.module.scss'
-import {COPY_LABEL, GO_HOME_LABEL} from 'utils/constants';
-import {copy} from 'utils/utils';
-import {ClickCount} from 'components/GameDetails/ClickCount';
-import {DisplayTimer} from 'components/GameDetails/DisplayTimer';
-import {Button} from "../components/Button";
-import {PageWrapper} from "../components/PageWrapper";
-import {ButtonTitle} from "../components/Button/const";
+import { COPY_LABEL, GO_HOME_LABEL } from 'utils/constants';
+import { copy } from 'utils/utils';
+import { ClickCount } from 'components/GameDetails/ClickCount';
+import { DisplayTimer } from 'components/GameDetails/DisplayTimer';
+import { Button } from "../components/Button";
+import { PageWrapper } from "../components/PageWrapper";
+import { ButtonTitle } from "../components/Button/const";
 import { useWebsocket } from "./hooks/useWebsocket";
 
 const GamePage = observer(() => {
@@ -19,6 +19,7 @@ const GamePage = observer(() => {
         gameIsStarted,
         user,
     } = appStore;
+
     const {
         data,
         roomUsers,
@@ -28,32 +29,32 @@ const GamePage = observer(() => {
         socket,
     } = useWebsocket(appStore);
 
-    const {roomLimit, userName} = user
+    const { roomLimit, userName } = user
     const [timeLeft, setTimeLeft] = useState<number>(5);
-    
+
     const isTimeUp = timeLeft === 0;
-    
+
     useEffect(() => {
-        if (roomLimit && +roomLimit === roomUsers.length) {
+        if(roomLimit && +roomLimit === roomUsers.length) {
             const intervalId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
             return () => clearInterval(intervalId);
         }
     }, [roomUsers.length, roomLimit]);
-    
+
     useEffect(() => {
-        if (!gameIsStarted && isTimeUp) setGameState(true);
+        if(!gameIsStarted && isTimeUp) setGameState(true);
     }, [isTimeUp, gameIsStarted]);
 
     const countHandler = (count: number) => {
         console.log('count', count)
         socket.emit('userMsg', count);
-    };    
+    };
 
     const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
 
     return (
         <PageWrapper center>
-            <div style={{display: 'flex', gap: '20px'}}>
+            <div style={{ display: 'flex', gap: '20px' }}>
                 <Button
                     title={ButtonTitle.Copy}
                     onClick={copy}
@@ -70,7 +71,7 @@ const GamePage = observer(() => {
             {gameIsStarted && (
                 <div className={styles.startGame}>GO</div>
             )}
-            <div style={{display: 'flex', gap: '40px', flexDirection: 'column'}}>
+            <div style={{ display: 'flex', gap: '40px', flexDirection: 'column' }}>
                 <ClickCount
                     userName={userName}
                     gameStarted={gameIsStarted}
