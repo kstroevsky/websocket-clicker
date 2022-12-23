@@ -1,8 +1,10 @@
-import React, { FC, useState } from 'react'
-import appStore from "../stores/appStore";
-import { PageWrapper } from "../components/PageWrapper";
+import TelegramButton from 'components/Auth/Telegram/TelegramButton';
+import { FC, useState } from 'react';
 import { AddForm } from "../components/GameDetails/AddForm";
+import { PageWrapper } from "../components/PageWrapper";
+import appStore from "../stores/appStore";
 import { START_GAME_LABEL } from "../utils/constants";
+import classes from './enterName.module.scss';
 
 export const EnterNamePage: FC = () => {
     const { setName, user, setUrlGame } = appStore;
@@ -15,14 +17,17 @@ export const EnterNamePage: FC = () => {
 
     return (
         <PageWrapper center>
-            <AddForm
-                onChangeText={setNameUser}
-                placeholder={'Enter your name'}
-                value={nameUser}
-                disabledBtn={!nameUser}
-                clickHandler={saveName}
-                titleBtn={START_GAME_LABEL}
-            />
+            <div className={classes.auth_container}>
+                <AddForm
+                    onChangeText={setNameUser}
+                    placeholder={'Enter your name'}
+                    value={nameUser}
+                    disabledBtn={!nameUser}
+                    clickHandler={saveName}
+                    titleBtn={START_GAME_LABEL}
+                />
+                <TelegramButton />
+            </div>
         </PageWrapper>
     );
 };

@@ -1,19 +1,21 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, observable } from "mobx";
+import { persist } from "mobx-persist";
 import { IUser } from "types/params";
 import { Game } from "../types/gameTypes";
-
 class AppStore {
     user: IUser = { gameDuration: 0, id: '', roomId: '', roomLimit: 0, userName: '', game: Game.Clicker }
     gameUrl: string = ''
     users: IUser[] = []
     gameIsStarted: boolean = false
+    @persist @observable persistedUserName = ''
 
     constructor() {
-        makeAutoObservable(this)
+        makeAutoObservable(this);
     }
 
     setName = (name: string) => {
         this.user.userName = name
+        this.persistedUserName = name
         sessionStorage.setItem('user', name)
     }
     setUsers = (users: IUser[]) => {
