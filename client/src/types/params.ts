@@ -4,6 +4,7 @@ export interface IUser {
     roomId: string
     roomLimit: number
     userName: string
+    game?: string
 }
 
 export interface IJoinToRoom {
@@ -11,6 +12,7 @@ export interface IJoinToRoom {
     roomLimit: number
     players: number
     gameDuration: number
+    game: string
 }
 
 export interface IRoom {
@@ -19,6 +21,7 @@ export interface IRoom {
     room: string
     roomLimit: number
     userName: string
+    game: string
 }
 
 export interface IRooms {

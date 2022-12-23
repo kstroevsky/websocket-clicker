@@ -1,18 +1,23 @@
 import React, {FC} from 'react';
 import classes from './styles/index.module.scss';
 import {Header} from "../Header";
+import classNames from "classnames";
 
 type PageWrapperType = {
     children: React.ReactNode;
+    center?: boolean;
 }
 
 export const PageWrapper: FC<PageWrapperType> = (
-    {children}
+    {children, center}
 ) => {
+    const contentWrapperClasses = classNames(classes.contentWrapper, {
+        [classes.contentWrapper_center]: center,
+    })
     return (
         <div className={classes.newGamePageWrapper}>
             <Header/>
-            <div className={classes.contentWrapper}>
+            <div className={contentWrapperClasses}>
                 {children}
             </div>
         </div>

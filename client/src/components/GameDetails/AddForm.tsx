@@ -2,10 +2,10 @@ import React, {ChangeEvent, FC} from 'react';
 import {AddFormPropsT} from "types/components";
 import classes from './styles/index.module.scss';
 import {Button} from "../Button";
+import { TextInput } from "../TextInput";
 
 export const AddForm: FC<AddFormPropsT> = props => {
     const {
-        type,
         onChange,
         onChangeText,
         onKeyPress,
@@ -27,8 +27,7 @@ export const AddForm: FC<AddFormPropsT> = props => {
     };
     return (
         <div className={classes.inputWrapper}>
-            <input
-                type={type}
+            <TextInput
                 onChange={onChangeCallback}
                 value={value}
                 onKeyPress={onKeyPressCallback}
