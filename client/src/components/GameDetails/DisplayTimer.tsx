@@ -19,7 +19,12 @@ export const DisplayTimer: FC<DisplayTimerPropsT> = ({
             ) : gameTime > 0 ? gameTime : 'Game Over'}
         </div>
         <div className={styles.winnerTitle}>
-            {winner && (gameStarted ? `Current Leader is ${winner}` : gameTime === 0 && `Player ${winner} WIN`)}
+            {winner.length !== 0 && (gameStarted ?
+                winner.length === 1 ?
+                    `Current Leader is ${winner[0]}`
+                    : `Current Leaders are ${winner.join(', ')}`
+                : gameTime === 0 &&
+                (winner.length === 1 ? `Player ${winner[0]} WIN` : `Players ${winner.join(', ')} WIN`))}
         </div>
     </>
 );

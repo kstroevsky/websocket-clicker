@@ -26,3 +26,5 @@ export const EnterNamePage: FC = () => {
         </PageWrapper>
     );
 };
+
+export default EnterNamePage;

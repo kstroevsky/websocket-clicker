@@ -12,7 +12,7 @@ import appStore from "../../stores/appStore";
 
 let socket: Socket;
 
-export const Rooms = () => {
+export default function Rooms() {
     const { changeSettingsGame } = appStore;
     const navigate = useNavigate();
     const [rooms, setRooms] = useState<IRooms>({});

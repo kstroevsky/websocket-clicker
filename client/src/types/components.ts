@@ -6,7 +6,7 @@ export type DisplayTimerPropsT = {
     data: { userName: string, text: number }[]
     timeLeft: number
     gameStarted: boolean
-    winner: string
+    winner: string[]
     gameTime: string | number
 }
 export type AddFormPropsT = {

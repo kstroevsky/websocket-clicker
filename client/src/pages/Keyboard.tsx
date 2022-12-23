@@ -15,7 +15,7 @@ import { ButtonTitle } from "../components/Button/const";
 import { copy } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 
-export const Keyboard: FC = observer(() => {
+const Keyboard: FC = observer(() => {
     const {
         data,
         roomUsers,
@@ -86,7 +86,11 @@ export const Keyboard: FC = observer(() => {
         setCountOfWords(prevState => prevState + 1);
     };
 
-    const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
+    const getWinners = () => {
+        const sortedUsers = data.sort((a, b) => b.text - a.text);
+        return sortedUsers.filter((item) => item.text === sortedUsers[0].text)
+            .map(item => item.userName);
+    };
 
     return (
         <PageWrapper>
@@ -121,7 +125,7 @@ export const Keyboard: FC = observer(() => {
             )}
             <DisplayTimer
                 roomUsers={roomUsers}
-                winner={winner}
+                winner={getWinners()}
                 gameStarted={isTimerStarted}
                 timeLeft={leftTime / 1000}
                 data={data}
@@ -130,3 +134,5 @@ export const Keyboard: FC = observer(() => {
         </PageWrapper>
     );
 });
+
+export default Keyboard;

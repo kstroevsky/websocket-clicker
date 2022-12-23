@@ -50,7 +50,11 @@ const GamePage = observer(() => {
         socket.emit('userMsg', count);
     };
 
-    const winner = data.sort((a, b) => b.text - a.text)[0]?.userName;
+    const getWinners = () => {
+        const sortedUsers = data.sort((a, b) => b.text - a.text);
+        return sortedUsers.filter((item) => item.text === sortedUsers[0].text)
+            .map(item => item.userName);
+    };
 
     return (
         <PageWrapper center>
@@ -81,7 +85,7 @@ const GamePage = observer(() => {
                 />
                 <DisplayTimer
                     roomUsers={roomUsers}
-                    winner={winner}
+                    winner={getWinners()}
                     gameStarted={gameIsStarted}
                     timeLeft={timeLeft}
                     data={data}

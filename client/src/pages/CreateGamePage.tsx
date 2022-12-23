@@ -38,7 +38,7 @@ export const CreateGamePage: FC = observer(() => {
     const [roomLimit, setRoomLimit] = useState(user.roomLimit);
     const [gameDuration, setGameDuration] = useState(user.gameDuration);
     const [nameUser, setNameUser] = useState(user.userName);
-    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+    const [selectedOption, setSelectedOption] = useState<Option | null>(options[0]);
     const [joinUrl, setJoinUrl] = useState(gameUrl);
     const roomId = uuid();
     const { createGame, joinGame } = useGameDetails();
@@ -61,29 +61,30 @@ export const CreateGamePage: FC = observer(() => {
         [setRoomLimit],
     );
 
-    const onChangeGameDurationHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeGameDurationHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.currentTarget.value || 0;
         setGameDuration(+inputValue > 60 ? 60 : inputValue as unknown as number)
-    };
+    }, [setGameDuration]);
 
-    const onSelectChange = (option: Option | null) => {
+    const onSelectChange = useCallback((option: Option | null) => {
         setSelectedOption(option);
-    }
-    const startGame = () => {
+    }, [setSelectedOption]);
+
+    const startGame = useCallback(() => {
         changeSettingsGame(roomId, roomLimit, gameDuration, selectedOption?.value)
         createGame(roomId, nameUser, roomLimit, gameDuration, selectedOption?.value);
-    };
+    }, [createGame, changeSettingsGame]);
 
-    const joinToGame = () => {
+    const joinToGame = useCallback(() => {
         setUrlGame(joinUrl)
         joinGame(joinUrl, nameUser);
-    };
+    }, [setUrlGame, joinGame]);
 
-    const openList = () => {
+    const openList = useCallback(() => {
         navigate('/rooms', { state: { name: nameUser } });
-    };
+    }, [navigate]);
 
-    const saveName = () => setName(nameUser);
+    const saveName = useCallback(() => setName(nameUser), [setName]);
 
     return (
         <PageWrapper center>
@@ -92,7 +93,7 @@ export const CreateGamePage: FC = observer(() => {
                     <h3 className={styles.titleForInput}>CREATE THE GAME</h3>
                     <Dropdown
                         onChange={onSelectChange}
-                        defaultValue={options[0]}
+                        defaultValue={selectedOption}
                         options={options}
                     />
                     <div className={classes.flexBox}>
@@ -153,3 +154,5 @@ export const CreateGamePage: FC = observer(() => {
         </PageWrapper>
     );
 });
+
+export default CreateGamePage;

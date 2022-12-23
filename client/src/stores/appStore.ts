@@ -33,8 +33,8 @@ class AppStore {
             ...this.user,
             game: params[3],
             roomId: params[4],
-            roomLimit: +params[6],
-            gameDuration: +params[7],
+            roomLimit: Number.isNaN(+params[6]) ? 2 : +params[6],
+            gameDuration: Number.isNaN(+params[7]) ? 10 : +params[7],
         }
     }
     setGameState = (value: boolean) => this.gameIsStarted = value
