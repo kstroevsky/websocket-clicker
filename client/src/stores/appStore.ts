@@ -3,7 +3,7 @@ import { persist } from "mobx-persist";
 import { IUser } from "types/params";
 import { Game } from "../types/gameTypes";
 class AppStore {
-    user: IUser = { gameDuration: 0, id: '', roomId: '', roomLimit: 0, userName: '', game: Game.Clicker }
+    user: IUser = { gameDuration: 0, id: '', roomId: '', roomLimit: 2, userName: '', game: Game.Clicker }
     gameUrl: string = ''
     users: IUser[] = []
     gameIsStarted: boolean = false

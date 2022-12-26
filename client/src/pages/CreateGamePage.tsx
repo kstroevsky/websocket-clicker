@@ -100,7 +100,6 @@ export const CreateGamePage: FC = observer(() => {
                         <TextInput
                             type="number"
                             min={2}
-                            max={5}
                             placeholder={CreateGameFormPlaceholders.NumberOfPlayers}
                             value={roomLimit}
                             onChange={onChangeRoomLimitHandler}
@@ -113,7 +112,7 @@ export const CreateGamePage: FC = observer(() => {
                             placeholder={CreateGameFormPlaceholders.GameDuration}
                             value={gameDuration}
                             onChange={onChangeGameDurationHandler}
-                            label="Game Duration:"
+                            label="Game Duration (sec):"
                         />
                     </div>
                     <Button

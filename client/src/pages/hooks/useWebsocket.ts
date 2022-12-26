@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { SOCKET_URL } from "../../utils/constants";
-import { IUser } from "../../types/params";
 import { io, Socket } from 'socket.io-client';
 import AppStore from "../../stores/appStore";
+import { IUser } from "../../types/params";
+import { SOCKET_URL } from "../../utils/constants";
 
 let socket: Socket;
 
@@ -23,6 +23,7 @@ export const useWebsocket = (appStore: typeof AppStore) => {
     const [superMoment, setSuperMoment] = useState(0);
     const [gameTime, setGameTime] = useState<number>(gameDuration || 10);
     const gameTimeout = useRef<NodeJS.Timeout | null>(null);
+    const [gameStartedTime, setGameStartedTime] = useState<string>();
 
     const games: string[] = ['regularGame', 'superGame'];
 
@@ -56,9 +57,11 @@ export const useWebsocket = (appStore: typeof AppStore) => {
         };
         socket.on('message', handler);
         socket.emit('joinRoom', { roomId, userName, roomLimit, gameDuration, game });
-        socket.on('roomUsers', ({ users }: { roomId: string, users: IUser[] }) => {
+        socket.on('roomUsers', ({ users, gameStarted }: { roomId: string, users: IUser[], gameStarted: string }) => {
             setRoomUsers(users);
+            setGameStartedTime(gameStarted)
         });
+        
         return () => {
             socket.disconnect();
         };
@@ -71,5 +74,6 @@ export const useWebsocket = (appStore: typeof AppStore) => {
         superMoment,
         gameTime,
         socket,
+        gameStartedTime,
     }
 }

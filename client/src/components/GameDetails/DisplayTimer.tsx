@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
-import { DisplayTimerPropsT } from "types/components";
-import styles from './../../pages/styles.module.scss';
 import OpponentCounter from 'components/OponentCounter';
+import { FC } from 'react';
+import { DisplayTimerPropsT } from "types/components";
 import { Timer } from "../Timer";
+import styles from './../../pages/styles.module.scss';
 
 export const DisplayTimer: FC<DisplayTimerPropsT> = ({
     roomUsers, data, timeLeft, gameStarted, winner, gameTime,
@@ -15,7 +15,7 @@ export const DisplayTimer: FC<DisplayTimerPropsT> = ({
         </div>
         <div className={styles.timeLeft}>
             {timeLeft > 0 ? (
-                <Timer time={timeLeft * 1000}/>
+                <Timer time={`${timeLeft}`} isFinishing={timeLeft <= 3}/>
             ) : gameTime > 0 ? gameTime : 'Game Over'}
         </div>
         <div className={styles.winnerTitle}>
