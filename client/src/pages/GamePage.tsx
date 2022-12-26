@@ -27,42 +27,56 @@ const GamePage = observer(() => {
         superMoment,
         gameTime,
         socket,
-        gameStartedTime
+        gameStartedTime,
+        setGameStartedTime
     } = useWebsocket(appStore);
 
     const { roomLimit, userName } = user
     const [timeLeft, setTimeLeft] = useState<number>(5);
+    const [isCountDownStarts, setIsCountdownStarts] = useState(false);
 
     const isTimeUp = timeLeft === 0;
 
     useEffect(() => {
         if(roomLimit && +roomLimit === roomUsers.length) {
+            setIsCountdownStarts(true);
             const intervalId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
-            return () => clearInterval(intervalId);
+            return () => {clearInterval(intervalId)};
         }
     }, [roomUsers.length, roomLimit]);
 
     useEffect(() => {
         if(!gameIsStarted && isTimeUp) {
+            setIsCountdownStarts(false)
             setGameState(true)
         };
     }, [isTimeUp, gameIsStarted]);
 
     useEffect(() => {
+        let gamePendingIntervalId: NodeJS.Timer | undefined;
+
+
         if (!isNil(gameStartedTime)) {
-            const gamePendingInterval = setInterval(() => {
-                const shouldCloseLobby = +new Date() - +new Date(gameStartedTime) > GAME_PENDING_TIME; 
+            gamePendingIntervalId = setInterval(() => {
+                const shouldCloseLobby = Math.floor((+new Date() - +new Date(gameStartedTime)) / 1000) * 1000 >= GAME_PENDING_TIME; 
 
                 if (shouldCloseLobby) {
+                    setGameStartedTime(undefined);
                     navigate('/')
                 }
             }, 1000);
-    
-            return () => {
-                clearInterval(gamePendingInterval);
+
+            if (isCountDownStarts || gameIsStarted) {
+                clearInterval(gamePendingIntervalId);
+                setGameStartedTime(undefined);
             }
         }
-    }, [gameStartedTime, navigate])
+
+        return () => {
+            clearInterval(gamePendingIntervalId);
+            gamePendingIntervalId = undefined;
+        }
+    }, [gameIsStarted, gameStartedTime, isCountDownStarts, navigate, setGameStartedTime])
 
     const countHandler = (count: number) => {
         console.log('count', count)

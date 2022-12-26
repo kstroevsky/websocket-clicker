@@ -1,21 +1,21 @@
-import React, { ChangeEvent, FC, useCallback, useState } from 'react'
 import { observer } from "mobx-react-lite";
-import { PageWrapper } from "../components/PageWrapper";
-import { GroupBox } from "../components/GroupBox";
-import appStore from "../stores/appStore";
-import styles from "./styles.module.scss";
-import { START_GAME_LABEL } from "../utils/constants";
-import { Button } from "../components/Button";
-import { TextInput } from "../components/TextInput";
-import { CreateGameFormPlaceholders } from "../components/GameDetails/const";
-import { ButtonTitle } from "../components/Button/const";
-import { v4 as uuid } from "uuid";
-import { useGameDetails } from "../hooks/useGameDetails";
-import { Dropdown } from "../components/Dropdown";
-import classes from './createGamePage.module.scss';
-import { AddForm } from "../components/GameDetails/AddForm";
+import { ChangeEvent, FC, useCallback, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { v4 as uuid } from "uuid";
+import { Button } from "../components/Button";
+import { ButtonTitle } from "../components/Button/const";
+import { Dropdown } from "../components/Dropdown";
+import { AddForm } from "../components/GameDetails/AddForm";
+import { CreateGameFormPlaceholders } from "../components/GameDetails/const";
+import { GroupBox } from "../components/GroupBox";
+import { PageWrapper } from "../components/PageWrapper";
+import { TextInput } from "../components/TextInput";
+import { useGameDetails } from "../hooks/useGameDetails";
+import appStore from "../stores/appStore";
 import { Game } from "../types/gameTypes";
+import { START_GAME_LABEL } from "../utils/constants";
+import classes from './createGamePage.module.scss';
+import styles from "./styles.module.scss";
 
 const options = [
     { value: Game.Clicker, label: 'Clicker' },
@@ -46,24 +46,16 @@ export const CreateGamePage: FC = observer(() => {
 
     const onChangeRoomLimitHandler = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
-            const inputValue = e.currentTarget.value;
-            switch(true) {
-                case +inputValue < 2 && inputValue !== '':
-                    setRoomLimit(2);
-                    break;
-                case +inputValue > 5:
-                    setRoomLimit(5);
-                    break;
-                default:
-                    setRoomLimit(inputValue as unknown as number);
-            }
+            const inputValue = Math.max(2, Number(e.target.value));
+
+            setRoomLimit(inputValue);
         },
         [setRoomLimit],
     );
 
     const onChangeGameDurationHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.currentTarget.value || 0;
-        setGameDuration(+inputValue > 60 ? 60 : inputValue as unknown as number)
+        const inputValue = Math.max(10, Math.min(60, Number(e.target.value)));
+        setGameDuration(inputValue)
     }, [setGameDuration]);
 
     const onSelectChange = useCallback((option: Option | null) => {
@@ -99,7 +91,6 @@ export const CreateGamePage: FC = observer(() => {
                     <div className={classes.flexBox}>
                         <TextInput
                             type="number"
-                            min={2}
                             placeholder={CreateGameFormPlaceholders.NumberOfPlayers}
                             value={roomLimit}
                             onChange={onChangeRoomLimitHandler}
@@ -107,8 +98,6 @@ export const CreateGamePage: FC = observer(() => {
                         />
                         <TextInput
                             type="number"
-                            min={10}
-                            max={60}
                             placeholder={CreateGameFormPlaceholders.GameDuration}
                             value={gameDuration}
                             onChange={onChangeGameDurationHandler}

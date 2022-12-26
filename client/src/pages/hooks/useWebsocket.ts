@@ -75,5 +75,6 @@ export const useWebsocket = (appStore: typeof AppStore) => {
         gameTime,
         socket,
         gameStartedTime,
+        setGameStartedTime
     }
 }
