@@ -2,17 +2,17 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import appStore from "stores/appStore";
-import styles from './styles.module.scss'
+import styles from '../styles.module.scss'
 import { COPY_LABEL, GO_HOME_LABEL } from 'utils/constants';
 import { copy } from 'utils/utils';
 import { ClickCount } from 'components/GameDetails/ClickCount';
 import { DisplayTimer } from 'components/GameDetails/DisplayTimer';
-import { Button } from "../components/Button";
-import { PageWrapper } from "../components/PageWrapper";
-import { ButtonTitle } from "../components/Button/const";
-import { useWebsocket } from "./hooks/useWebsocket";
+import { Button } from "../../components/Button";
+import { PageWrapper } from "../../components/PageWrapper";
+import { ButtonTitle } from "../../components/Button/const";
+import { useWebsocket } from "../../hooks/useWebsocket";
 
-const GamePage = observer(() => {
+export const GamePage = observer(() => {
     const navigate = useNavigate();
     const {
         setGameState,
@@ -46,7 +46,6 @@ const GamePage = observer(() => {
     }, [isTimeUp, gameIsStarted]);
 
     const countHandler = (count: number) => {
-        console.log('count', count)
         socket.emit('userMsg', count);
     };
 
@@ -95,5 +94,3 @@ const GamePage = observer(() => {
         </PageWrapper>
     );
 })
-
-export default GamePage;

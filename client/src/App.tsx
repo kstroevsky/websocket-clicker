@@ -1,16 +1,16 @@
 import { observer } from "mobx-react-lite";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import GamePage from 'pages/GamePage';
 import React, { Suspense } from "react";
 import appStore from "./stores/appStore";
 import { Game } from "./types/gameTypes";
 import { PageWrapper } from "./components/PageWrapper";
 
-const Error404 = React.lazy(() => import('./pages/Error404/Error404'));
+const Error404 = React.lazy(() => import('./pages/Error404'));
 const Rooms = React.lazy(() => import("./components/Rooms/Rooms"));
 const Keyboard = React.lazy(() => import("./pages/Keyboard"));
 const CreateGamePage = React.lazy(() => import("./pages/CreateGamePage"));
 const EnterNamePage = React.lazy(() => import("./pages/EnterNamePage"));
+const GamePage = React.lazy(() => import("./pages/GamePage"));
 
 export const App = observer(() => {
     const { user } = appStore;

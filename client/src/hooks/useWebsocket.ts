@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { SOCKET_URL } from "../../utils/constants";
-import { IUser } from "../../types/params";
+import { SOCKET_URL } from "../utils/constants";
+import { IUser } from "../types/params";
 import { io, Socket } from 'socket.io-client';
-import AppStore from "../../stores/appStore";
+import AppStore from "../stores/appStore";
 
 let socket: Socket;
 
@@ -31,15 +31,16 @@ export const useWebsocket = (appStore: typeof AppStore) => {
 
     useEffect(() => {
         getInfoGame()
-        setTypeGame(games[Math.floor(Math.random() * games.length)])
+        setTypeGame(games[Math.round(Math.random() * games.length)])
     }, []);
 
     useEffect(() => {
         if(gameIsStarted) {
             if(typeGame === 'superGame') {
-                setSuperPlayer(users[Math.floor(Math.random() * users.length)]?.userName)
-                let moments: number[] = Array.apply(0, Array(gameDuration - diffStart - diffEnd)).map((_, index) => index + diffStart + 1);
-                setSuperMoment(moments[Math.floor(Math.random() * moments.length)])
+                setSuperPlayer(users[Math.round(Math.random() * (users.length - 1))]?.userName);
+                let moments: number[] = Array.apply(0, Array(gameDuration - diffStart - diffEnd))
+                    .map((_, index) => index + diffStart + 1);
+                setSuperMoment(moments[Math.round(Math.random() * moments.length)]);
             }
             const intervalId = setInterval(() => setGameTime((prev: number) => prev - 1), 1000);
             gameTimeout.current = setTimeout(() => {

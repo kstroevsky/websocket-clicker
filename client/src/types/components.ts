@@ -45,4 +45,3 @@ export type ListOfRoomsPropsT = {
     gameDuration: number
     game: string
 }
-

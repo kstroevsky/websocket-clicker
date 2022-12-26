@@ -1,5 +1,5 @@
-import React, {FC, ElementType} from 'react';
-import {FIRE_STYLE_CLASSNAME} from "../../utils/constants";
+import React, { FC, ElementType } from 'react';
+import { FIRE_STYLE_CLASSNAME } from "../../utils/constants";
 import classes from './style/index.module.scss';
 import classNames from "classnames";
 
