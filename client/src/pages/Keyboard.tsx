@@ -1,19 +1,19 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import { observer } from "mobx-react-lite";
+import randomWords from "random-words";
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { Button } from "../components/Button";
+import { ButtonTitle } from "../components/Button/const";
+import { DisplayTimer } from "../components/GameDetails/DisplayTimer";
 import { PageWrapper } from "../components/PageWrapper";
 import { TextInput } from "../components/TextInput";
-import randomWords from "random-words";
-import classes from './keyboard.module.scss';
-import { Button } from "../components/Button";
-import { COPY_LABEL, GO_HOME_LABEL } from "../utils/constants";
-import { useTimer } from "../components/Timer/hooks/useTimer";
 import { Timer } from "../components/Timer";
-import { observer } from "mobx-react-lite";
-import { useWebsocket } from "./hooks/useWebsocket";
+import { useTimer } from "../components/Timer/hooks/useTimer";
 import appStore from "../stores/appStore";
-import { DisplayTimer } from "../components/GameDetails/DisplayTimer";
-import { ButtonTitle } from "../components/Button/const";
+import { COPY_LABEL, GO_HOME_LABEL } from "../utils/constants";
 import { copy } from "../utils/utils";
-import { useNavigate } from "react-router-dom";
+import { useWebsocket } from "./hooks/useWebsocket";
+import classes from './keyboard.module.scss';
 
 const Keyboard: FC = observer(() => {
     const {
@@ -121,7 +121,7 @@ const Keyboard: FC = observer(() => {
                 </div>
             )}
             {isPreTimerStarted && !isPreTimerFinished && (
-                <Timer time={leftPreTime} label="Game starts in"/>
+                <Timer time={`${leftPreTime / 1000}s`} label="Game starts in" isFinishing={leftPreTime <= 3000000}/>
             )}
             <DisplayTimer
                 roomUsers={roomUsers}

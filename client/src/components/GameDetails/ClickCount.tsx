@@ -3,13 +3,12 @@ import {ClickCountPropsT} from "types/components";
 import styles from './../../pages/styles.module.scss';
 
 export const ClickCount: FC<ClickCountPropsT> = ({
-                                                     countHandler,
-                                                     gameStarted,
-                                                     userName,
-                                                     superPlayer,
-                                                     superMoment,
-                                                 }) => {
-    
+    countHandler,
+    gameStarted,
+    userName,
+    superPlayer,
+    superMoment,
+}) => {
     const [count, setCount] = useState<number>(0);
     const [showButtonSuperClick, setShowButtonSuperClick] = useState<boolean>(false);   
     

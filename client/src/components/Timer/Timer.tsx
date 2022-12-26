@@ -3,16 +3,17 @@ import classes from './styles/index.module.scss';
 import classNames from "classnames";
 
 type TimerType = {
-    time: number;
+    time: string;
     label?: string;
+    isFinishing?: boolean;
 }
 
-export const Timer: FC<TimerType> = ({ time, label }) => {
+export const Timer: FC<TimerType> = ({ time, label, isFinishing = false }) => {
     const timerClasses = classNames(classes.timer, {
-        [classes.timer_is_finishing]: time <= 3000,
+        [classes.timer_is_finishing]: isFinishing,
     });
 
     return (
-        <div className={timerClasses}>{label ?? ''} {time/1000}s</div>
+        <div className={timerClasses}>{label ?? ''} {time}</div>
     );
 }

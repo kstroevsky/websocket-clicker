@@ -44,6 +44,7 @@ io.on('connection', socket => {
 			io.to(user.room).emit('roomUsers', {
 				room: user.room,
 				users: getRoomUsers(user.room),
+				gameStarted: new Date(),
 			});
 			socket.on('userMsg', msg => {
 				const user = getCurrentUser(socket.id);

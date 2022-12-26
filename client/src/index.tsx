@@ -1,8 +1,20 @@
-import {App} from "App";
+import { App } from "App";
+import { create } from "mobx-persist";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import reportWebVitals from 'reportWebVitals';
+import appStore from "stores/appStore";
+import './index.css';
+
+const hydrate = create({
+    storage: localStorage,
+    jsonify: true,
+});
+
+hydrate('appStore', appStore)
+  .then((store) => {
+    store.setName(store.persistedUserName)
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
