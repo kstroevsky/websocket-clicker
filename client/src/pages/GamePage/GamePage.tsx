@@ -61,12 +61,14 @@ export const GamePage = observer(() => {
                 <Button
                     title={ButtonTitle.Copy}
                     onClick={copy}
+                    isCircle
                 >
                     {COPY_LABEL}
                 </Button>
                 <Button
                     title={ButtonTitle.GoHome}
                     onClick={() => navigate('/')}
+                    isCircle
                 >
                     {GO_HOME_LABEL}
                 </Button>

@@ -11,6 +11,7 @@ const Keyboard = React.lazy(() => import("./pages/Keyboard"));
 const CreateGamePage = React.lazy(() => import("./pages/CreateGamePage"));
 const EnterNamePage = React.lazy(() => import("./pages/EnterNamePage"));
 const GamePage = React.lazy(() => import("./pages/GamePage"));
+const WordsGamePage = React.lazy(() => import("./pages/WordsGamePage"));
 
 export const App = observer(() => {
     const { user } = appStore;
@@ -27,6 +28,10 @@ export const App = observer(() => {
                         <Route
                             path={`/${Game.Keyboard}/:roomId/:userName/:roomLimit/:gameDuration`}
                             element={<Keyboard/>}
+                        />
+                        <Route
+                            path={`/${Game.WordsGame}/:roomId/:userName/:roomLimit/:gameDuration`}
+                            element={<WordsGamePage/>}
                         />
                         <Route path="/" element={<CreateGamePage/>}/>
                         <Route path="/rooms" element={<Rooms/>}/>

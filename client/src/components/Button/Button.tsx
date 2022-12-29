@@ -10,6 +10,7 @@ type ButtonType = {
     isDisabled?: boolean;
     title?: string;
     onKeyPress?: React.KeyboardEventHandler<HTMLButtonElement>;
+    isCircle?: boolean
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonType>(({
@@ -20,8 +21,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonType>(({
     title,
     onKeyPress,
     style,
+    isCircle
 }, ref) => {
-    const buttonClasses = classNames(classes.buttonEnterName, className);
+    const buttonClasses = classNames(className, {
+        [classes.button]: !isCircle,
+        [classes.buttonEnterName]: isCircle
+    });
 
     return (
         <button

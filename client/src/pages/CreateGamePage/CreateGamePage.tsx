@@ -20,6 +20,7 @@ import { Game } from "../../types/gameTypes";
 const options = [
     { value: Game.Clicker, label: 'Clicker' },
     { value: Game.Keyboard, label: 'Keyboard' },
+    { value: Game.WordsGame, label: 'Words game' },
 ];
 
 type Option = {
@@ -120,6 +121,7 @@ export const CreateGamePage: FC = observer(() => {
                         isDisabled={!(roomLimit && gameDuration)}
                         onClick={startGame}
                         title={ButtonTitle.Create}
+                        isCircle
                     >
                         {START_GAME_LABEL}
                     </Button>
@@ -136,7 +138,7 @@ export const CreateGamePage: FC = observer(() => {
                     </div>
                     <div className={styles.inputs}>
                         <h3 className={styles.titleForInput}>List of active games</h3>
-                        <Button onClick={openList}>
+                        <Button onClick={openList} isCircle>
                             {START_GAME_LABEL}
                         </Button>
                     </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type useTimerType = {
     ms: number,
@@ -11,38 +11,38 @@ export const useTimer = ({
 }: useTimerType) => {
     const [isTimerStarted, setIsTimerStarted] = useState(false);
     const [isTimerFinished, setIsTimerFinished] = useState(false);
-    const [timer, setTimer] = useState<NodeJS.Timeout>();
     const [leftTime, setLeftTime] = useState(ms);
-    const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
+    const intervalId = useRef<NodeJS.Timeout>();
+    const timer = useRef<NodeJS.Timeout>();
 
     useEffect(() => {
         if(isTimerStarted) {
-            const timerId = setTimeout(() => {
+            timer.current = setTimeout(() => {
                 setIsTimerStarted(false);
                 setIsTimerFinished(true);
-            }, ms);
-            setTimer(timerId);
+                clearTimeout(timer.current);
+            }, leftTime);
         }
         return () => {
-            clearTimeout(timer);
+            clearTimeout(timer.current);
+            clearInterval(intervalId.current);
         }
     }, [isTimerStarted]);
 
     useEffect(() => {
         if(isTimerStarted) {
-            setIntervalId(
-                setInterval(() => {
-                    setLeftTime(prev => prev - step >= 0 ? prev - step : 0);
-                    if(leftTime === 0){
-                        clearInterval(intervalId);
-                    }
-                }, step)
-            );
+            intervalId.current = setInterval(() => {
+                setLeftTime(prev => prev - step >= 0 ? prev - step : 0);
+                if(leftTime === 0) {
+                    clearInterval(intervalId.current);
+                }
+            }, step);
         }
     }, [isTimerStarted]);
-
     const startTimer = () => {
-        setLeftTime(ms);
+        if(leftTime === 0) {
+            setLeftTime(ms);
+        }
         setIsTimerStarted(true);
         setIsTimerFinished(false);
     }
@@ -50,7 +50,17 @@ export const useTimer = ({
     const finishTimer = () => {
         setIsTimerStarted(false);
         setIsTimerFinished(true);
-        clearTimeout(timer);
+        clearTimeout(timer.current);
+        clearInterval(intervalId.current);
+    }
+
+    const pauseTimer = () => {
+        setIsTimerStarted(false);
+        setIsTimerFinished(false);
+        clearTimeout(timer.current);
+        clearInterval(intervalId.current);
+        intervalId.current = undefined;
+        timer.current = undefined;
     }
 
     return {
@@ -59,5 +69,6 @@ export const useTimer = ({
         leftTime,
         startTimer,
         finishTimer,
+        pauseTimer,
     };
 }
