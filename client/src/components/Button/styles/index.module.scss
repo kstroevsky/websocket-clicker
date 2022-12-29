@@ -1,5 +1,30 @@
 @import "../../../styles/const";
 
+.button {
+  color: $main-color;
+  background: $white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 24px;
+  transition: 0.3s;
+  padding: 12px;
+  margin: 0;
+  min-width: 200px;
+
+  &:hover {
+    color: $white;
+    background: $main-color;
+  }
+
+  &:disabled {
+    background: $disabled;
+    color: $disabled-dark;
+    cursor: default;
+  }
+}
+
 .buttonEnterName {
   color: $main-color;
   border: none;

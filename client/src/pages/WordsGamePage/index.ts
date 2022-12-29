@@ -1,0 +1,1 @@
+export { WordsGamePage as default } from './WordsGamePage'

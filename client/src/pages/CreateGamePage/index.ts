@@ -1,0 +1,1 @@
+export { CreateGamePage as default } from './CreateGamePage';

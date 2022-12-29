@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react'
-import appStore from "../stores/appStore";
-import { PageWrapper } from "../components/PageWrapper";
-import { AddForm } from "../components/GameDetails/AddForm";
-import { START_GAME_LABEL } from "../utils/constants";
+import appStore from "../../stores/appStore";
+import { PageWrapper } from "../../components/PageWrapper";
+import { AddForm } from "../../components/GameDetails/AddForm";
+import { START_GAME_LABEL } from "../../utils/constants";
 
 export const EnterNamePage: FC = () => {
     const { setName, user, setUrlGame } = appStore;
@@ -26,5 +26,3 @@ export const EnterNamePage: FC = () => {
         </PageWrapper>
     );
 };
-
-export default EnterNamePage;

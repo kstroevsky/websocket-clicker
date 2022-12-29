@@ -34,7 +34,7 @@ export default function Rooms() {
             <h3 className={styles.titleForInput}>
                 {`${location.state.name}, Chose a game or press button to create new game`}
             </h3>
-            <Button onClick={() => navigate('/')}>
+            <Button onClick={() => navigate('/')} isCircle>
                 {START_GAME_LABEL}
             </Button>
             <div style={{ display: 'flex' }}>

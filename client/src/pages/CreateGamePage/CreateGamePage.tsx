@@ -1,25 +1,26 @@
 import React, { ChangeEvent, FC, useCallback, useState } from 'react'
 import { observer } from "mobx-react-lite";
-import { PageWrapper } from "../components/PageWrapper";
-import { GroupBox } from "../components/GroupBox";
-import appStore from "../stores/appStore";
-import styles from "./styles.module.scss";
-import { START_GAME_LABEL } from "../utils/constants";
-import { Button } from "../components/Button";
-import { TextInput } from "../components/TextInput";
-import { CreateGameFormPlaceholders } from "../components/GameDetails/const";
-import { ButtonTitle } from "../components/Button/const";
+import { PageWrapper } from "../../components/PageWrapper";
+import { GroupBox } from "../../components/GroupBox";
+import appStore from "../../stores/appStore";
+import styles from "../styles.module.scss";
+import { START_GAME_LABEL } from "../../utils/constants";
+import { Button } from "../../components/Button";
+import { TextInput } from "../../components/TextInput";
+import { CreateGameFormPlaceholders } from "../../components/GameDetails/const";
+import { ButtonTitle } from "../../components/Button/const";
 import { v4 as uuid } from "uuid";
-import { useGameDetails } from "../hooks/useGameDetails";
-import { Dropdown } from "../components/Dropdown";
-import classes from './createGamePage.module.scss';
-import { AddForm } from "../components/GameDetails/AddForm";
+import { useGameDetails } from "../../hooks/useGameDetails";
+import { Dropdown } from "../../components/Dropdown";
+import classes from '../createGamePage.module.scss';
+import { AddForm } from "../../components/GameDetails/AddForm";
 import { useNavigate } from "react-router-dom";
-import { Game } from "../types/gameTypes";
+import { Game } from "../../types/gameTypes";
 
 const options = [
     { value: Game.Clicker, label: 'Clicker' },
     { value: Game.Keyboard, label: 'Keyboard' },
+    { value: Game.WordsGame, label: 'Words game' },
 ];
 
 type Option = {
@@ -120,6 +121,7 @@ export const CreateGamePage: FC = observer(() => {
                         isDisabled={!(roomLimit && gameDuration)}
                         onClick={startGame}
                         title={ButtonTitle.Create}
+                        isCircle
                     >
                         {START_GAME_LABEL}
                     </Button>
@@ -136,7 +138,7 @@ export const CreateGamePage: FC = observer(() => {
                     </div>
                     <div className={styles.inputs}>
                         <h3 className={styles.titleForInput}>List of active games</h3>
-                        <Button onClick={openList}>
+                        <Button onClick={openList} isCircle>
                             {START_GAME_LABEL}
                         </Button>
                     </div>
@@ -154,5 +156,3 @@ export const CreateGamePage: FC = observer(() => {
         </PageWrapper>
     );
 });
-
-export default CreateGamePage;

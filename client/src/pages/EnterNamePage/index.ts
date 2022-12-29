@@ -1,0 +1,1 @@
+export { EnterNamePage as default } from './EnterNamePage';
