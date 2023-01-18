@@ -1,4 +1,4 @@
 export enum CreateGameFormPlaceholders {
     NumberOfPlayers = 'Number of players',
-    GameDuration = 'Game Duration',
+    GameDuration = 'Game Duration (sec)',
 }
